@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>대진대 교수연수 홈</title>
+<style>
+:root{
+  --navy:#1f2a44; --navy-d:#18222d; --gold:#b8963e; --gold-soft:#e9d9a8; --gold-bg:#f7f2e7;
+  --red:#d9534f; --red-d:#a8433b; --bg:#faf8f3; --card:#fff; --line:#e3e0d6; --ink:#2b3140; --muted:#5b6475;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;line-height:1.65}
+a{color:inherit}
+header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 100%);color:#fff;border-bottom:4px solid var(--gold)}
+header .in{max-width:1000px;margin:0 auto;padding:46px 16px 38px}
+.k{display:inline-block;font-size:13px;letter-spacing:.06em;color:var(--gold-soft);border:1px solid var(--gold-soft);border-radius:999px;padding:3px 12px;margin-bottom:14px}
+h1{margin:0 0 8px;font-size:clamp(26px,4.4vw,38px);line-height:1.3;text-wrap:balance}
+.lead{margin:0;color:#cfd6e4;font-size:16px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:20px;font-size:14.5px;color:#cfd6e4}
+.meta b{color:var(--gold-soft);font-weight:700;margin-right:4px}
+main{max-width:1000px;margin:0 auto;padding:30px 16px 60px}
+h2.sec{font-size:20px;color:var(--navy);margin:0 0 4px}
+p.hint{margin:0 0 16px;color:var(--muted);font-size:15px}
+
+.day{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:720px){.day{grid-template-columns:1fr}}
+a.card{display:flex;flex-direction:column;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .15s,box-shadow .15s;min-width:0}
+a.card:hover,a.card:focus-visible{transform:translateY(-3px);box-shadow:0 10px 26px rgba(31,42,68,.13);outline:none}
+a.card:focus-visible{box-shadow:0 0 0 3px var(--gold)}
+.ch{padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff;background:var(--navy)}
+.card.pm .ch{background:var(--red)}
+.ch .t{font-weight:800;font-size:15px}
+.ch .tm{font-size:14px;font-variant-numeric:tabular-nums;opacity:.92}
+.cb{padding:20px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cb h3{margin:0;font-size:21px;color:var(--navy);line-height:1.4;text-wrap:balance}
+.cb .sub{margin:0;color:var(--muted);font-size:15px}
+.steps{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:6px}
+.steps li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;font-size:15px}
+.steps .n{font-size:12px;font-weight:800;color:var(--navy);background:var(--gold-bg);border:1px solid var(--gold-soft);border-radius:999px;padding:0 9px;white-space:nowrap}
+.card.pm .steps .n{color:var(--red-d);background:#fdeceb;border-color:#f0b7b3}
+.steps .opt{color:var(--muted)}
+.go{margin-top:auto;padding-top:8px;font-weight:800;color:var(--red)}
+.card.am .go{color:var(--navy)}
+
+.more{margin-top:30px}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+a.mcard{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:14px;padding:16px 18px;transition:border-color .15s}
+a.mcard:hover,a.mcard:focus-visible{border-color:var(--red);outline:none}
+a.mcard .tag{font-size:12px;font-weight:800;color:var(--red-d)}
+a.mcard h4{margin:4px 0 4px;font-size:17px;color:var(--navy)}
+a.mcard p{margin:0;color:var(--muted);font-size:14.5px}
+
+.prep{margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.box.safe{background:#fdeceb;border-color:#f0b7b3}
+.box b.t{display:block;color:var(--navy);margin-bottom:6px}
+.box.safe b.t{color:var(--red-d)}
+.box ul{margin:0;padding-left:20px;font-size:15px}
+.box li{margin:3px 0}
+footer{text-align:center;color:#8a8f99;font-size:13px;padding:0 16px 34px}
+@media (prefers-reduced-motion:reduce){a.card,a.mcard{transition:none}a.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <span class="k">2026학년도 2학기 · 대진대학교 교수 역량 강화 연수</span>
+  <h1>오늘의 웹교안</h1>
+  <p class="lead">듣는 반을 눌러 들어가세요. 교안 위쪽 버튼으로 언제든 홈·오전반·오후반을 오갈 수 있습니다.</p>
+  <div class="meta">
+    <span><b>일시</b>2026. 11. 6.(금)</span>
+    <span><b>장소</b>정보전산원 202호</span>
+    <span><b>강사</b>이애진 · 플로우디엑스(FlowDX) 대표</span>
+  </div>
+</div></header>
+
+<main>
+  <h2 class="sec">교안 선택</h2>
+  <p class="hint">오전반이 끝나면 점심(도시락) 후 13:30에 오후반이 시작됩니다.</p>
+
+  <div class="day">
+    <a class="card am" href="am-basic.html">
+      <div class="ch"><span class="t">오전반</span><span class="tm">10:00 – 12:00</span></div>
+      <div class="cb">
+        <h3>제미나이와 크롬으로 완성하는 디지털 기본기</h3>
+        <p class="sub">알고 보면 쉬운 제미나이와 구글 신기능</p>
+        <ul class="steps">
+          <li><span class="n">0–1</span><span>크롬 기본기 · 크롬 속 제미나이로 PDF·여러 문서 대조</span></li>
+          <li><span class="n">2</span><span>제미나이 스킬 · 루브릭 채점 젬을 스킬로</span></li>
+          <li><span class="n">3</span><span>구글폼 → 시트 AI로 응답 정리</span></li>
+          <li><span class="n">4</span><span>드라이브 공유·사본 링크 · 면담 예약 페이지</span></li>
+          <li><span class="n">5–6</span><span>렌즈 · 음성 입력 · QR · 크롬 확장 프로그램</span></li>
+        </ul>
+        <span class="go">오전반 교안 열기 →</span>
+      </div>
+    </a>
+
+    <a class="card pm" href="pm.html">
+      <div class="ch"><span class="t">오후반</span><span class="tm">13:30 – 15:30</span></div>
+      <div class="cb">
+        <h3>바이브코딩으로 만드는 나만의 업무·수업·연구 도구</h3>
+        <p class="sub">말하면 만들어지는 나만의 도구, 교수를 위한 바이브코딩 첫걸음</p>
+        <ul class="steps">
+          <li><span class="n">1단계</span><span>캔바 코드로 몸풀기</span></li>
+          <li><span class="n">2단계</span><span>제미나이 캔버스로 수업 도구 만들기</span></li>
+          <li><span class="n">3단계</span><span>노트북LM으로 근거 있는 바이브코딩</span></li>
+          <li><span class="n">4단계</span><span class="opt">구글 AI 스튜디오 (심화)</span></li>
+          <li><span class="n">5단계</span><span class="opt">백엔드 연결·배포 (심화)</span></li>
+        </ul>
+        <span class="go">오후반 교안 열기 →</span>
+      </div>
+    </a>
+  </div>
+
+  <section class="more">
+    <h2 class="sec">오후반 더 해 보기</h2>
+    <p class="hint">빨리 끝나신 분, 연수 뒤 연구실에서 이어서 해 보실 분을 위한 교안입니다.</p>
+    <div class="mini">
+      <a class="mcard" href="pm2.html">
+        <span class="tag">오후반 2부 · 심화</span>
+        <h4>말로 만드는 수업 쌍방향 웹페이지</h4>
+        <p>학생은 포스트잇을 붙이고, 교수님은 비밀번호로 대시보드를 엽니다. 파이어베이스 연결과 넷리파이 배포까지.</p>
+      </a>
+    </div>
+  </section>
+
+  <div class="prep">
+    <div class="box">
+      <b class="t">오늘 준비물</b>
+      <ul>
+        <li>개인 구글 계정(@gmail.com)과 비밀번호</li>
+        <li>휴대폰 (2단계 인증, 렌즈·QR 실습)</li>
+        <li>수업에 써 보고 싶은 과목 하나 떠올려 오기</li>
+      </ul>
+    </div>
+    <div class="box safe">
+      <b class="t">모든 실습 공통 안전선</b>
+      <ul>
+        <li>학생 실명·학번·성적 실데이터는 넣지 않습니다. 가상 자료만 씁니다.</li>
+        <li>미공개 연구자료는 개인 AI 계정에 올리지 않습니다.</li>
+        <li>AI 결과는 초안입니다. 최종 판단은 교수님께 있습니다.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer>강사 이애진 · 플로우디엑스(FlowDX) · ai@flowdx.kr · <a href="https://flowdx.kr" target="_blank" rel="noopener">flowdx.kr</a></footer>
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>대진대학교 교수 역량 강화 연수 · 오후반 · 수업 쌍방향 웹페이지 만들기</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+section{scroll-margin-top:70px}
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:12px 0}
+.trio>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.trio span{display:inline-block;font-size:12px;font-weight:800;color:#fff;background:var(--navy);border-radius:999px;padding:1px 10px}
+.trio b{display:block;color:var(--navy);margin:6px 0 2px;font-size:17px}
+.trio p{margin:0;font-size:14px;color:var(--muted)}
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 10px}
+.step .no{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:17px}
+.step h4{margin:4px 0 6px;color:var(--navy);font-size:18px}
+.step p{margin:0 0 8px}.step ol,.step ul{margin:0 0 8px;padding-left:22px}
+.tip{font-size:14px;color:var(--muted);background:#f6f7f9;border-radius:8px;padding:6px 10px;margin:6px 0 0}
+.okline{margin:8px 0 0!important;font-size:14px;font-weight:700;color:var(--green)}
+.dl{display:inline-block;background:var(--green);color:#fff!important;text-decoration:none;font-weight:800;border-radius:10px;padding:10px 16px;margin:6px 6px 6px 0}
+.dl.alt{background:var(--navy)}
+pre.code{background:#1f2933;color:#e6e9ee;border-radius:10px;padding:12px 14px;font-size:13.5px;overflow-x:auto;white-space:pre}
+.uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.uses div{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:12px;padding:12px 14px}
+.uses b{color:var(--navy)}.uses p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:10px 0}
+.subjects button{font:inherit;text-align:left;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;line-height:1.35}
+.subjects button b{display:block;color:var(--navy);font-size:14.5px}.subjects button small{color:var(--muted);font-size:12.5px}
+.subjects button:hover{border-color:var(--gold)}
+.subjects button.on{background:var(--navy);border-color:var(--navy)}.subjects button.on b{color:#fff}.subjects button.on small{color:var(--gold-soft)}
+.mine{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;background:var(--gold-bg);border:1px solid var(--gold-soft);border-radius:12px;padding:12px 14px;margin:10px 0}
+.mine label{display:grid;gap:3px;font-size:13px;font-weight:700;color:#7a6224}.mine .wide{grid-column:1/-1}
+.mine input{font:inherit;font-size:15px;font-weight:400;border:1px solid #d9cfb5;border-radius:8px;padding:7px 10px;background:#fff;color:var(--ink)}
+@media(max-width:560px){.mine{grid-template-columns:1fr}}
+.mine textarea{font:inherit;font-size:15px;font-weight:400;border:1px solid #d9cfb5;border-radius:8px;padding:7px 10px;background:#fff;color:var(--ink);resize:vertical}
+.mine .ttl{display:block;font-size:13px;color:#7a6224;margin-bottom:4px}
+.opts{display:flex;flex-wrap:wrap;gap:6px 14px}.opts label{display:inline-flex;align-items:center;gap:5px;font-weight:500;font-size:14.5px;color:var(--ink);cursor:pointer}
+.shots{display:grid;gap:12px;margin:12px 0}.shots figure{margin:0}
+details.ex{margin:6px 0 14px}details.ex>summary{font-size:15px}
+figure img{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(10,15,22,.88);display:flex;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+.lb[hidden]{display:none}
+.lb img{max-width:96vw;max-height:88vh;border-radius:10px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.lb p{position:absolute;left:0;right:0;bottom:12px;margin:0;text-align:center;color:#e6e9ee;font-size:14px;padding:0 16px}
+.lb button{position:absolute;top:12px;right:16px;border:0;background:#fff;color:#23303f;border-radius:999px;width:40px;height:40px;font-size:22px;cursor:pointer}
+#allSubjects h5{margin:12px 0 2px;font-size:14px;color:var(--navy)}#allSubjects h5:first-child{margin-top:0}
+.pwcard{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--gold-bg);border:2px solid var(--gold);border-radius:12px;padding:10px 14px;margin:10px 0}
+.pwcard span{font-weight:800;color:#7a6224}.pwcard b{font-size:22px;letter-spacing:.04em;color:var(--navy);font-family:ui-monospace,Consolas,monospace}
+.pwcard small{flex-basis:100%;color:var(--muted);font-size:13.5px}
+.prompt.must{border-left-color:var(--red)}.prompt.must .label{color:var(--red)}
+.fontctl{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:4px;background:var(--navy);border-radius:999px;padding:5px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.fontctl button{border:0;background:#fff;color:var(--navy);border-radius:999px;min-width:46px;height:46px;font:inherit;font-weight:800;font-size:18px;cursor:pointer;padding:0 10px}
+.fontctl button:hover{background:var(--gold-bg)}
+.fontctl span{color:#fff;font-size:14px;font-weight:700;min-width:48px;text-align:center}
+.fontctl button.reset{font-size:13px;min-width:auto}
+@media print{.fontctl{display:none}}
+.pwcard .pwcopy{border:0;background:var(--navy);color:#fff;border-radius:10px;padding:8px 16px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;align-self:center}
+.pwcard .pwcopy.done{background:var(--green)}
+mark.chg{background:#fde2e1;color:#c62828;font-weight:800;border-radius:4px;padding:0 3px}
+.chgnote{font-size:13.5px;color:#c62828;font-weight:700;margin:6px 0 0}
+#fBoard{color:#c62828;font-weight:800;letter-spacing:.02em}
+#fBoard::placeholder{color:#c9a3a1;font-weight:500}
+.boardwarn{margin:2px 0 0;font-size:13.5px;font-weight:700;color:#c62828}
+.prompt button.copy:disabled{opacity:.4;cursor:not-allowed}
+.samplelist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.samplelist li{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.samplelist .tx{flex:1;min-width:0}
+.dot{flex:none;font-size:12.5px;font-weight:800;border-radius:999px;padding:2px 10px}
+.d-yellow{background:#fff59d;color:#7a5b00}.d-pink{background:#f8bbd0;color:#8a1c4a}.d-sky{background:#b3e5fc;color:#0b4f71}.d-green{background:#c5e1a5;color:#33561a}
+.ex-copy{flex:none;border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:8px;padding:4px 12px;font:inherit;font-size:13.5px;cursor:pointer}
+.ex-copy.done{background:var(--green);border-color:var(--green);color:#fff}
+.samph{margin:14px 0 4px;font-size:15px;color:var(--navy)}
+nav.quick.tabs .wrap{gap:6px}
+nav.quick.tabs button{white-space:nowrap;font:inherit;font-size:14px;color:var(--navy);padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;cursor:pointer}
+nav.quick.tabs button:hover{background:var(--gold-bg);border-color:var(--gold)}
+nav.quick.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+nav.quick.tabs button.adv{border-style:dashed}
+nav.quick.tabs button.adv.on{border-style:solid}
+section[data-hide]{display:none}
+.tabnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:24px 0 72px;padding-top:16px;border-top:1px solid var(--line)}
+.tabnav button{font:inherit;font-size:15px;font-weight:700;border-radius:12px;padding:12px 18px;cursor:pointer;border:1px solid var(--navy);background:#fff;color:var(--navy)}
+.tabnav button.next{background:var(--navy);color:#fff;margin-left:auto}
+</style>
+</head>
+<body>
+<div style="background:#18222d;padding:8px 16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-family:'Pretendard','Noto Sans KR','Malgun Gothic',sans-serif;font-size:14px">
+<a href="index.html" style="padding:5px 14px;border-radius:999px;border:1px solid #bfa05f;color:#f2e6c4;text-decoration:none;font-weight:700">🏠 홈</a>
+<a href="am-basic.html" style="padding:5px 14px;border-radius:999px;border:1px solid #5b6672;color:#e6e9ee;text-decoration:none;font-weight:700">오전반</a>
+<a href="pm.html" style="padding:5px 14px;border-radius:999px;border:1px solid #5b6672;color:#e6e9ee;text-decoration:none;font-weight:700">오후반 1부</a>
+<a href="pm2.html" style="padding:5px 14px;border-radius:999px;background:#d9534f;color:#fff;text-decoration:none;font-weight:700">오후반 2부</a>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">대진대학교 교수 역량 강화 연수 · 오후반</p>
+    <h1>말로 만드는 수업 쌍방향 웹페이지</h1>
+    <p class="sub">학생은 포스트잇을 붙이고, 교수님은 비밀번호로 대시보드를 엽니다</p>
+    <div class="meta">
+      <span><b>도구</b> 제미나이 캔버스 · 파이어베이스 · 넷리파이</span>
+      <span><b>준비물</b> 개인 Gmail 계정 · 크롬 · 휴대폰</span>
+      <span><b>시간</b> 2시간</span>
+    </div>
+  </div>
+</header>
+
+<nav class="quick tabs"><div class="wrap" id="tabbar"></div></nav>
+
+<main><div class="wrap">
+
+<!-- 오늘 흐름 -->
+<section id="flow">
+  <h2 class="sec">오늘 흐름</h2>
+  <p class="lead">세 단계면 내 수업 웹페이지가 인터넷 주소를 갖게 됩니다. 네 번째 단계는 시간이 되는 분만 합니다.</p>
+  <div class="timeline">
+    <div class="tl"><div class="tm">13:30<small>10분</small></div><div><b>먼저 체험</b> — 강사 보드에 휴대폰으로 포스트잇 붙이기</div></div>
+    <div class="tl"><div class="tm">13:40<small>10분</small></div><div><b>바이브코딩이란</b> — 화면 · 데이터 · 주소, 세 가지만 기억하기</div></div>
+    <div class="tl"><div class="tm">13:50<small>20분</small></div><div><b>① 화면 만들기</b> — 내 과목을 골라 제미나이 캔버스로 수업 보드와 대시보드 만들기</div></div>
+    <div class="tl"><div class="tm">14:10<small>30분</small></div><div><b>② 파이어베이스</b> — 창고 만드는 과정 강사 시연 → 연수용 창고에 내 보드 연결하기</div></div>
+    <div class="tl rest"><div class="tm">14:40<small>5분</small></div><div>쉬는 시간</div></div>
+    <div class="tl"><div class="tm">14:45<small>20분</small></div><div><b>③ 넷리파이 배포</b> — 폴더를 끌어다 놓아 인터넷 주소 받기</div></div>
+    <div class="tl"><div class="tm">15:05<small>15분</small></div><div><b>④ 내 수업으로 키우기 · ②+ 내 창고 만들기</b> (선택) — 빨리 끝낸 분 먼저, 나머지는 집에서</div></div>
+    <div class="tl"><div class="tm">15:20<small>10분</small></div><div><b>수업에 쓰기</b> — 꼭 알아 둘 세 가지와 활용 아이디어</div></div>
+  </div>
+</section>
+
+<!-- 체험 -->
+<section id="try">
+  <h2 class="sec">먼저 체험 <span class="time">10분</span></h2>
+  <div class="card">
+    <p>휴대폰 카메라로 QR을 찍고 질문에 답을 붙여 주세요. 화면 앞쪽 강사 보드에 바로 올라옵니다.</p>
+    <div class="slot">[강사 보드 QR 이미지 자리]</div>
+    <p>체험해 볼 것: ① 색깔(유형) 골라 붙이기 ② 다른 분 포스트잇에 ❤️ 누르기 ③ 강사가 🔒 교수 대시보드를 여는 모습 보기</p>
+    <a class="dl alt" href="https://share.gemini.google/5Ffq0cIqyP5H" target="_blank" rel="noopener">제미나이로 만든 완성 예시 보기</a> <a class="dl alt" href="files/postit-board.html" target="_blank">완성본 미리 보기 (체험 모드)</a>
+  </div>
+</section>
+
+<!-- 바이브코딩 -->
+<section id="vibe">
+  <h2 class="sec">바이브코딩이란 <span class="time">10분</span></h2>
+  <p class="lead">코드를 직접 쓰지 않고, 원하는 것을 AI에게 말로 설명해 프로그램을 만드는 방식입니다. 교수님이 하실 일은 <b>무엇을 만들지 분명하게 말하고, 결과를 확인하고, 고쳐 달라고 말하는 것</b>입니다.</p>
+  <div class="trio">
+    <div><span>① 화면</span><b>식당의 홀</b><p>학생이 보고 누르는 부분. 오늘은 제미나이 캔버스가 만들어 줍니다.</p></div>
+    <div><span>② 데이터</span><b>식당의 창고</b><p>포스트잇이 저장되는 곳. 창고가 없으면 새로고침하는 순간 사라집니다. → 파이어베이스</p></div>
+    <div><span>③ 배포</span><b>간판과 주소</b><p>누구나 찾아올 수 있는 인터넷 주소. → 넷리파이</p></div>
+  </div>
+  <div class="callout gold"><b class="t">오늘 만들 것</b>학생 화면(포스트잇 붙이기·공감) + 교수 대시보드(비밀번호·통계·숨기기·CSV) → 파이어베이스에 저장 → 넷리파이 주소로 공유</div>
+</section>
+
+<!-- STEP 1 -->
+<section id="s1">
+  <h2 class="sec">① 화면 만들기 <span class="time">20분</span></h2>
+  <p class="lead">제미나이 캔버스에 말로 부탁해서 포스트잇 보드를 만듭니다.</p>
+
+  <div class="step"><div class="no">1</div><div>
+    <h4>제미나이 캔버스 열기</h4>
+    <ol><li>크롬에서 <a href="https://gemini.google.com" target="_blank">gemini.google.com</a> 접속 (개인 Gmail로 로그인)</li>
+    <li>입력창 왼쪽 <b>+</b> 버튼 → <b>Canvas</b> 선택</li></ol>
+    <div class="shots">
+      <figure><img src="img/gemini-canvas.png" alt="입력창 왼쪽 + 메뉴에서 Canvas" loading="lazy"><figcaption>입력창 왼쪽 + 메뉴에서 Canvas</figcaption></figure>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">2</div><div>
+    <h4>내 과목 고르기 → 부탁문 복사 → 붙여 넣기</h4>
+    <p>내 과목과 가장 가까운 것을 누르면 아래 부탁문의 <b>첫 네 줄(과목·주제·질문·색깔 뜻)</b>이 바뀝니다. 내 수업에 맞게 아래 칸을 직접 고쳐 써도 됩니다.</p>
+    <div class="subjects" id="subjects"></div>
+    <details class="ex"><summary>단과대학별 전체 과목 보기 (<span id="allCount"></span>개) — 내 과목이 위에 없다면 여기서</summary><div class="body" id="allSubjects"></div></details>
+    <div class="mine">
+      <label>과목<input id="fSubject"></label>
+      <label>주차와 주제<input id="fTopic"></label>
+      <label class="wide">오늘의 질문<input id="fQuestion"></label>
+      <label class="wide">색깔 뜻 (노랑 · 분홍 · 하늘 · 연두)<input id="fColors"></label>
+    </div>
+    <p class="chgnote">빨간 글씨가 과목 버튼과 위 칸에 따라 바뀌는 곳이에요.</p>
+    <div class="prompt"><div class="label">부탁문 ① 수업 보드 만들기</div><button class="copy">복사</button><pre id="mainPrompt"></pre></div>
+    <p class="okline">✓ 오른쪽 미리 보기에 예시 포스트잇 8개가 붙은 보드가 나오면 성공</p>
+    <a class="dl alt" href="https://share.gemini.google/5Ffq0cIqyP5H" target="_blank" rel="noopener">완성 예시 보기 (교수 대시보드 포함 · 제미나이 캔버스)</a>
+    <div class="pwcard"><span>🔒 교수 대시보드 비밀번호</span><b id="pwText">daejin1234</b><button type="button" class="pwcopy" id="pwCopy">비밀번호 복사</button><small>부탁문에 정해 둔 비밀번호예요. 오른쪽 위 🔒 버튼을 누르고 넣어 보세요. 다른 비밀번호를 쓰고 싶으면 부탁문의 daejin1234를 바꿔서 보내면 됩니다.</small></div>
+    <div class="shots">
+      <figure><img src="img/board-dashboard-login.png" alt="교수 대시보드 비밀번호 창" loading="lazy"><figcaption>🔒 버튼을 누르면 나오는 비밀번호 창. 입력칸에 실제 비밀번호(daejin1234)가 그대로 보이죠? 학생도 볼 수 있으니 다음 ③ 단계에서 꼭 숨겨요.</figcaption></figure>
+      <figure><img src="img/board-dashboard.jpg" alt="실시간 수업 리포트와 관리 화면" loading="lazy"><figcaption>비밀번호를 넣으면 열리는 '실시간 수업 리포트 & 관리': 전체 의견 수 · 공감 합계 · 색깔별 비율 · 공감 TOP 5 · 워드클라우드. 빨간 네모의 질문 바꾸기 · CSV 내려받기, 발표 화면 모드도 여기서. (예시: 중급 중국어 회화 7주차)</figcaption></figure>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">3</div><div>
+    <h4>비밀번호 숨기고, 한 번 더 있어 보이게 고치기</h4>
+    <p>한 번에 하나씩 부탁하는 것이 요령입니다. 먼저 비밀번호부터 숨기세요.</p>
+    <div class="prompt must"><div class="label">고치기 ⓪ 비밀번호 숨기기 (모두 꼭!)</div><button class="copy">복사</button><pre>교수 대시보드 비밀번호 입력창에 실제 비밀번호가 힌트로 보이지 않게 해 줘. 입력칸 안내 문구는 '비밀번호'라고만 쓰고, 화면 어디에도 비밀번호를 보여 주지 마. 비밀번호를 틀리면 "비밀번호가 맞지 않아요"라고만 알려 줘.</pre></div>
+    <p class="tip">학생도 같은 화면을 보기 때문에, 비밀번호가 보이면 누구나 대시보드를 열 수 있어요. 숨긴 뒤에도 비밀번호는 위 노란 상자의 <b>daejin1234</b> 그대로입니다.</p>
+    <p>그다음, 마음에 드는 것 하나만 골라 더 고쳐 보세요.</p>
+    <div class="prompt"><div class="label">고치기 ① AI 요약 칸</div><button class="copy">복사</button><pre>교수 대시보드에 'AI 요약' 칸을 추가해 줘. 지금 붙어 있는 의견을 분석해서 "학생들이 가장 헷갈려하는 개념 3가지"와 "다음 시간에 다시 설명할 것"을 카드로 보여 줘. 실제 AI 연결 없이 의견 속 단어 빈도로 계산해도 돼.</pre></div>
+    <details class="ex"><summary>결과 예시 보기 (중급 중국어 회화 7주차)</summary><div class="body">
+      <figure><img src="img/board-ai-summary.png" alt="교수 대시보드에 추가된 AI 수업 리포트와 피드백 분석 영역" loading="lazy"><figcaption>대시보드 아래에 'AI 수업 리포트 &amp; 피드백 분석'이 생겨요. 헷갈려하는 개념 TOP 3와 다음 시간에 다시 설명할 포인트를 카드로 보여 줍니다.</figcaption></figure>
+    </div></details>
+    <div class="prompt"><div class="label">고치기 ② 분류 보기</div><button class="copy">복사</button><pre>'발표 화면'에서 포스트잇이 색깔별로 네 줄로 정렬되는 '분류 보기'와, 무작위로 흩어진 '자유 보기'를 버튼으로 전환할 수 있게 해 줘. 전환할 때 카드가 부드럽게 이동하는 애니메이션도 넣어 줘.</pre></div>
+    <details class="ex"><summary>결과 예시 보기 (중급 중국어 회화 7주차)</summary><div class="body">
+      <figure><img src="img/board-sort-view.png" alt="발표 화면 보기 모드 설정의 분류 보기와 자유 보기 버튼" loading="lazy"><figcaption>'발표 화면 보기 모드 설정'에 분류 보기(4열 정렬)와 자유 보기(무작위 흩뿌리기) 버튼이 생겨요. 분류 보기를 누르면 같은 색깔끼리 모여 정렬됩니다.</figcaption></figure>
+    </div></details>
+    <details class="ex" open><summary>대시보드의 차트나 워드클라우드가 비어 있는 분만</summary><div class="body">
+      <p>대부분은 처음부터 잘 보입니다. 빈 칸으로 나오는 경우에만 아래 부탁문을 보내세요.</p>
+      <div class="prompt"><div class="label">차트·워드클라우드 고치기</div><button class="copy">복사</button><pre>차트와 워드클라우드가 미리 보기에서 안 보여. 외부 라이브러리 없이 직접 그려 줘.</pre></div>
+    </div></details>
+  </div></div>
+
+  <div class="step"><div class="no">4</div><div>
+    <h4>실험: 포스트잇을 붙이고 새로고침해 보기</h4>
+    <p>포스트잇 몇 장을 붙인 뒤 미리 보기를 새로고침(또는 다시 실행)해 보세요. <b>내가 붙인 것은 사라지고 처음 예시 8개만 남습니다.</b></p>
+    <details class="ex samples"><summary>붙여 볼 예시 의견 (복사해서 쓰세요) · 공통 8개 + 중국어 회화 8개</summary><div class="body">
+      <p class="tip">의견을 생각하기 어려우면 아래 문장을 [복사]해서 의견 칸에 붙여 넣고(Ctrl+V), <b>옆에 적힌 색깔</b>을 골라 붙이세요. 이름도 아무렇게나 바꿔 가며 붙이면 대시보드가 더 그럴듯해져요.</p>
+      <ul class="samplelist"><li><span class="dot d-yellow">노랑</span><span class="tx">오늘 배운 개념을 실제 예시로 보니까 이해가 잘 됐어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-yellow">노랑</span><span class="tx">처음엔 어려웠는데 정리해 주신 표 덕분에 흐름이 잡혔어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">비슷한 두 개념의 차이가 아직 헷갈려요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">중간 부분 설명이 빨라서 따라가기 어려웠어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">오늘 내용은 시험에 어느 정도 나오나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">과제는 어떤 형식으로 내면 되나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">실제 현장에서 쓰이는 사례를 더 알고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">관련된 읽을거리나 영상을 추천해 주세요.</span><button type="button" class="ex-copy">복사</button></li></ul>
+      <h5 class="samph">중급 중국어 회화 7주차 예시 (완성 예시 보드 · 강사 체험 보드용)</h5>
+      <p class="tip">중국어 회화 보드처럼 외국어가 들어간 보드는 이 문장들로 테스트해 보세요. 노랑=써 보고 싶은 표현, 분홍=발음 어려움, 하늘=질문, 연두=더 알고 싶음.</p>
+      <ul class="samplelist"><li><span class="dot d-yellow">노랑</span><span class="tx">"服务员，点菜！" 식당에서 메뉴판 달라고 할 때 꼭 써 보고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-yellow">노랑</span><span class="tx">"推荐一下招牌菜吧！" 대표 메뉴 추천받을 때 자연스럽게 쓰고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">"麻烦少放点香菜，谢谢！" 성조가 꼬여서 너무 어려워요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">"打包带走" 3성 발음이 잘 안 올라가요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">"买单"과 "结账"은 어떤 상황에서 다르게 쓰나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">중국 식당에서도 "冰水" 달라고 하면 그냥 주나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">"微信支付还是支付宝？" 모바일 결제 표현을 더 알고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">"这个菜辣不辣？" 말고 맛을 물어보는 표현이 또 있나요?</span><button type="button" class="ex-copy">복사</button></li></ul>
+    </div></details>
+    <div class="callout blue"><b class="t">왜 사라질까요?</b>지금은 '홀(화면)'만 있고 '창고(데이터 저장소)'가 없기 때문입니다. 그리고 옆 교수님 화면과도 공유되지 않습니다. → 다음 단계에서 창고를 연결합니다.</div>
+  </div></div>
+</section>
+
+<!-- STEP 2 -->
+<section id="s2">
+  <h2 class="sec">② 파이어베이스 연결 <span class="time">30분</span></h2>
+  <p class="lead">파이어베이스는 구글이 만든 무료 데이터 저장소(창고)입니다. 포스트잇을 여기에 저장하면 모든 사람의 화면에 실시간으로 나타납니다.</p>
+  <div class="callout gold"><b class="t">오늘은 이렇게 해요</b>창고를 직접 만드는 과정은 강사가 화면으로 보여 드리고, 교수님들은 <b>강사가 미리 만들어 둔 연수용 창고</b>에 내 보드를 연결합니다. 내 수업에 실제로 쓰실 때는 아래 <a href="#s2x">②+ 내 창고 만들기</a>를 따라 교수님 계정에 창고를 만들어 옮기시면 됩니다.</div>
+
+  <div class="step"><div class="no">1</div><div>
+    <h4>창고 만드는 과정 보기 <span class="badge b-demo">강사 시연 5분</span></h4>
+    <p>강사가 프로젝트 만들기 → 설정 코드 → 저장소(Firestore) → 규칙 → 익명 로그인까지 화면으로 보여 드립니다. 따라 하지 않고 <b>"창고를 이렇게 만드는구나"</b>만 보시면 됩니다.</p>
+    <div class="tblwrap"><table>
+      <tr><th>순서</th><th>하는 일</th><th>왜 필요할까</th></tr>
+      <tr><td>1</td><td>프로젝트 만들기</td><td>데이터를 담을 '창고 건물'</td></tr>
+      <tr><td>2</td><td>웹 앱 등록 → 설정 코드 받기</td><td>보드가 창고를 찾아오는 '주소'</td></tr>
+      <tr><td>3</td><td>Firestore 만들기</td><td>포스트잇이 실제로 쌓이는 '서랍'</td></tr>
+      <tr><td>4</td><td>규칙 바꾸기</td><td>누가 서랍을 열 수 있는지 정하는 '자물쇠'</td></tr>
+      <tr><td>5</td><td>익명 로그인 켜기</td><td>학생이 회원가입 없이 '손님'으로 들어오게</td></tr>
+    </table></div>
+  </div></div>
+
+  <div class="step"><div class="no">2</div><div>
+    <h4>내 보드 이름 정하기</h4>
+    <p>연수용 창고 하나를 모두 함께 쓰기 때문에, <b>보드 이름이 겹치지 않게</b> 정해야 내 포스트잇과 옆 교수님 포스트잇이 섞이지 않습니다.</p>
+    <div class="mine"><label class="wide"><span>보드 이름 = <b>내 영문 이름</b> (성-이름, 영어 소문자)</span><input id="fBoard" value="" placeholder="예: hong-gildong" autocomplete="off" spellcheck="false"></label>
+      <p class="boardwarn wide" id="boardWarn">⚠ 위 칸에 내 영문 이름을 먼저 써 주세요. 써야 아래 부탁문의 [복사] 버튼이 켜집니다.</p></div>
+    <p class="tip">예시(hong-gildong)를 그대로 쓰면 모두 같은 보드가 되어 포스트잇이 섞여요. <b>꼭 내 이름</b>으로 쓰세요. 같은 이름의 교수님이 계시면 뒤에 과목을 붙이세요. 예: kim-minsu-stats</p>
+  </div></div>
+
+  <div class="step"><div class="no">3</div><div>
+    <h4>내 보드에 창고 연결하기 — 두 가지 길 중 하나</h4>
+    <p><b>길 A. 제미나이에게 부탁하기</b> (① 단계에서 보드를 만든 캔버스 대화창에서 이어서)</p>
+    <p class="chgnote">빨간 글씨가 내 보드 이름에 따라 바뀌는 곳이에요.</p>
+    <div class="prompt"><div class="label">부탁문 ② 파이어베이스 연결 (연수용 창고 설정 코드 포함)</div><button class="copy">복사</button><pre id="connectPrompt"></pre></div>
+    <p class="tip">부탁문에 연수용 창고의 설정 코드와 내 보드 이름이 이미 들어 있어요. 그대로 복사해 보내면 됩니다. 마지막 줄("다른 Firebase 설정이나 실행 환경 변수는 쓰지 말고")이 중요해요. 이 줄이 없으면 캔버스 안에서는 되는데 파일로 저장해 올리면 안 됩니다.</p>
+    <details class="ex"><summary>연수용 창고 설정 코드만 따로 보기</summary><div class="body">
+      <div class="prompt"><div class="label">연수용 창고 firebaseConfig</div><button class="copy">복사</button><pre>const firebaseConfig = {
+  apiKey: "AIzaSyDM6GpTdFaLwRmtIDv7T0mAhTVtm08SrcE",
+  authDomain: "postit-demo-215f5.firebaseapp.com",
+  projectId: "postit-demo-215f5",
+  storageBucket: "postit-demo-215f5.firebasestorage.app",
+  messagingSenderId: "547065029518",
+  appId: "1:547065029518:web:a46d272b5572501b43fadf"
+};</pre></div>
+    </div></details>
+    <p><b>길 B. 완성본 쓰기</b> (시간이 부족하거나 길 A가 잘 안 될 때)</p>
+    <ol><li>아래 버튼으로 완성본을 내려받기</li>
+    <li>파일을 오른쪽 클릭 → <b>연결 프로그램 → 메모장</b></li>
+    <li><code>/* ===== 설정 시작</code> 아래의 <code>const firebaseConfig = {...};</code>를 위 '연수용 창고 설정 코드'로 바꿔 붙이기</li>
+    <li>바로 아래 <code>const BOARD_ID = "class1";</code>의 class1을 <mark class="chg" id="boardEcho">내 보드 이름</mark>로 바꾸고, 비밀번호와 제목도 바꾼 뒤 저장</li></ol>
+    <a class="dl" href="files/postit-board.html" download="index.html">완성본 내려받기 (index.html)</a>
+  </div></div>
+
+  <div class="step"><div class="no">4</div><div>
+    <h4>내 컴퓨터에서 확인하기</h4>
+    <ol><li>캔버스 화면 오른쪽 위 <b>내보내기 옆 ⌄ → 코드 다운로드</b> → 저장 창이 뜨면 파일 이름을 <code>index.html</code>로 바꿔 저장 (저장 창 없이 바로 받아졌다면 다운로드 폴더에서 이름 바꾸기) (길 B는 이미 파일이 있음)
+      <div class="shots"><figure><img src="img/canvas-download.png" alt="캔버스 내보내기 메뉴의 코드 다운로드" loading="lazy"><figcaption>❶ 내보내기 옆 ⌄ → ❷ 코드 다운로드</figcaption></figure><figure><img src="img/save-index.png" alt="저장 창의 파일 이름 칸에 index.html 입력" loading="lazy"><figcaption>저장 창이 뜨면 파일 이름을 index.html로 바꿔 저장 (파일 형식은 HTML Document 그대로)</figcaption></figure></div></li>
+    <li>파일을 더블클릭해 크롬으로 열고 포스트잇 붙이기 → <b>새로고침해도 남아 있으면 성공</b></li>
+    <li>옆 교수님과 화면을 바꿔 보세요. 보드 이름이 다르면 서로의 포스트잇이 섞이지 않습니다.</li></ol>
+    <details class="ex samples"><summary>붙여 볼 예시 의견 (복사해서 쓰세요) · 공통 8개 + 중국어 회화 8개</summary><div class="body">
+      <p class="tip">의견을 생각하기 어려우면 아래 문장을 [복사]해서 의견 칸에 붙여 넣고(Ctrl+V), <b>옆에 적힌 색깔</b>을 골라 붙이세요. 이름도 아무렇게나 바꿔 가며 붙이면 대시보드가 더 그럴듯해져요.</p>
+      <ul class="samplelist"><li><span class="dot d-yellow">노랑</span><span class="tx">오늘 배운 개념을 실제 예시로 보니까 이해가 잘 됐어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-yellow">노랑</span><span class="tx">처음엔 어려웠는데 정리해 주신 표 덕분에 흐름이 잡혔어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">비슷한 두 개념의 차이가 아직 헷갈려요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">중간 부분 설명이 빨라서 따라가기 어려웠어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">오늘 내용은 시험에 어느 정도 나오나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">과제는 어떤 형식으로 내면 되나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">실제 현장에서 쓰이는 사례를 더 알고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">관련된 읽을거리나 영상을 추천해 주세요.</span><button type="button" class="ex-copy">복사</button></li></ul>
+      <h5 class="samph">중급 중국어 회화 7주차 예시 (완성 예시 보드 · 강사 체험 보드용)</h5>
+      <p class="tip">중국어 회화 보드처럼 외국어가 들어간 보드는 이 문장들로 테스트해 보세요. 노랑=써 보고 싶은 표현, 분홍=발음 어려움, 하늘=질문, 연두=더 알고 싶음.</p>
+      <ul class="samplelist"><li><span class="dot d-yellow">노랑</span><span class="tx">"服务员，点菜！" 식당에서 메뉴판 달라고 할 때 꼭 써 보고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-yellow">노랑</span><span class="tx">"推荐一下招牌菜吧！" 대표 메뉴 추천받을 때 자연스럽게 쓰고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">"麻烦少放点香菜，谢谢！" 성조가 꼬여서 너무 어려워요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-pink">분홍</span><span class="tx">"打包带走" 3성 발음이 잘 안 올라가요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">"买单"과 "结账"은 어떤 상황에서 다르게 쓰나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-sky">하늘</span><span class="tx">중국 식당에서도 "冰水" 달라고 하면 그냥 주나요?</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">"微信支付还是支付宝？" 모바일 결제 표현을 더 알고 싶어요.</span><button type="button" class="ex-copy">복사</button></li><li><span class="dot d-green">연두</span><span class="tx">"这个菜辣不辣？" 말고 맛을 물어보는 표현이 또 있나요?</span><button type="button" class="ex-copy">복사</button></li></ul>
+    </div></details>
+    <p class="tip">파일 이름을 바꿀 때 끝이 <code>.html</code>로 끝나야 합니다. <code>index.html.txt</code>나 <code>index (1).html</code>이 되면 안 돼요.</p>
+    <p class="tip">창고 안에 실제로 쌓이는 모습은 강사가 파이어베이스 데이터 탭을 화면에 띄워 보여 드립니다.</p>
+    <details class="ex"><summary>창고 들여다보는 법 (파이어베이스 데이터 탭)</summary><div class="body">
+      <ol><li><a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → 프로젝트 목록에서 창고 프로젝트 선택 (화면 맨 위 이름이 맞는지 확인)</li>
+      <li>왼쪽 <b>데이터베이스 및 스토리지 → Firestore</b></li>
+      <li>위쪽 <b>데이터</b> 탭에서 <b>boards → 내 보드 이름 → notes</b> 차례로 누르기</li>
+      <li>notes 안의 문서를 누르면 포스트잇 내용(text·color·likes·name)이 보여요</li></ol>
+      <div class="shots">
+        <figure><img src="img/fb-view-1-menu.png" alt="파이어베이스 왼쪽 메뉴에서 데이터베이스 및 스토리지, Firestore" loading="lazy"><figcaption>맨 위 프로젝트 이름 확인 → 데이터베이스 및 스토리지 → Firestore</figcaption></figure>
+        <figure><img src="img/fb-view-2-path.png" alt="데이터 탭에서 boards, aejin-demo, notes" loading="lazy"><figcaption>데이터 탭에서 boards → 보드 이름(예: aejin-demo) → notes</figcaption></figure>
+        <figure><img src="img/fb-view-3-notes.png" alt="notes 안에 쌓인 포스트잇 문서 8개" loading="lazy"><figcaption>notes 안에 포스트잇이 하나씩 문서로 쌓여요. 이상한 글자는 자동으로 붙는 문서 번호예요. 하나를 누르면 내용이 보여요.</figcaption></figure>
+        <figure><img src="img/fb-view-4-doc.png" alt="문서 하나를 눌러 본 포스트잇 내용" loading="lazy"><figcaption>문서를 누르면 포스트잇 한 장의 내용이 보여요. color(색깔) · createdAt(붙인 시간) · hidden(숨김 여부) · likes(공감 수) · name(이름) · text(내용)</figcaption></figure>
+      </div>
+      <p class="tip">내 창고를 만든 뒤(②+ 심화)에는 교수님 본인 프로젝트에서 같은 길로 확인할 수 있어요.</p>
+    </div></details>
+    <div class="shots">
+      <figure><img src="img/fb-21-data.jpg" alt="Firestore 데이터 탭의 boards, 보드 이름, notes 문서" loading="lazy"><figcaption>창고(파이어베이스) 안의 모습: boards → 보드 이름 → notes 안에 포스트잇마다 문서가 하나씩 쌓여요.</figcaption></figure>
+    </div>
+    <div class="callout red"><b class="t">연수용 창고는 연수 후 닫힙니다</b>연수용 창고는 연습용이라 연수가 끝나고 며칠 뒤 닫습니다. 그 뒤로는 포스트잇이 저장되지 않으니, 내 수업에 계속 쓰시려면 <a href="#s2x">②+ 내 창고 만들기</a>를 따라 교수님 계정에 창고를 만들고 설정 코드를 바꿔 주세요. 연수용 창고에는 학생 이름·연락처 같은 개인정보를 넣지 마세요.</div>
+  </div></div>
+</section>
+
+<!-- STEP 2+ -->
+<section id="s2x">
+  <h2 class="sec">②+ 내 창고 만들기 <span class="time">심화 · 빨리 끝난 분 / 집에서</span></h2>
+  <p class="lead">내 수업에 실제로 쓰려면 교수님 구글 계정에 창고를 만들어야 합니다. 그래야 학생 데이터가 교수님 계정에 안전하게 쌓이고, 연수용 창고가 닫힌 뒤에도 계속 쓸 수 있어요. 캡처를 보며 순서대로 따라 하세요.</p>
+  <div class="callout red"><b class="t">꼭 개인 Gmail로</b>학교 계정은 관리자 정책으로 파이어베이스가 막혀 있을 수 있습니다. 크롬 오른쪽 위 프로필이 개인 Gmail인지 확인하세요.</div>
+
+  <div class="step"><div class="no">1</div><div>
+    <h4>프로젝트 만들기</h4>
+    <ol><li><a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> 접속 → <b>새 Firebase 프로젝트 만들기</b></li>
+    <li>이름을 영어로: <code>postit-내이름</code> (예: postit-kim) → <b>계속</b></li>
+    <li>'Firebase의 Gemini'는 그대로 두고 <b>계속</b></li>
+    <li>Google 애널리틱스는 <b>꺼도 됩니다</b>(단계가 줄어요) → <b>프로젝트 만들기</b></li>
+    <li>"프로젝트가 준비되었습니다" → <b>계속</b>. 요금제는 무료(Spark)입니다.</li></ol>
+    <p class="tip">캡처의 <b style="color:#c62828">빨간 네모</b>가 누를 곳이고, 번호는 누르는 순서입니다.</p>
+    <div class="shots">
+      <figure><img src="img/fb-01-new.jpg" alt="❶ 새 Firebase 프로젝트 만들기" loading="lazy"><figcaption>❶ 새 Firebase 프로젝트 만들기</figcaption></figure>
+      <figure><img src="img/fb-02-name.jpg" alt="❷ 이름을 영어로 입력 → ❸ 계속" loading="lazy"><figcaption>❷ 이름을 영어로 입력 → ❸ 계속</figcaption></figure>
+      <figure><img src="img/fb-03-gemini.jpg" alt="❹ Firebase의 Gemini는 그대로 두고 계속" loading="lazy"><figcaption>❹ Firebase의 Gemini는 그대로 두고 계속</figcaption></figure>
+      <figure><img src="img/fb-04-analytics.jpg" alt="❺ 애널리틱스 끄기 → ❻ 프로젝트 만들기" loading="lazy"><figcaption>❺ 애널리틱스 끄기 → ❻ 프로젝트 만들기</figcaption></figure>
+      <figure><img src="img/fb-05-ready.jpg" alt="❼ 준비되면 계속" loading="lazy"><figcaption>❼ 준비되면 계속</figcaption></figure>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">2</div><div>
+    <h4>웹 앱 등록하고 설정 코드 복사하기</h4>
+    <ol><li>프로젝트 첫 화면에서 <b>앱 추가 → &lt;/&gt; (웹)</b> 아이콘</li>
+    <li>앱 닉네임: <code>postit</code> → Firebase 호스팅은 체크하지 않음 → <b>앱 등록</b></li>
+    <li><b>&lt;script&gt; 태그 사용</b>을 고르면 <code>const firebaseConfig = { ... };</code>가 나옵니다. 중괄호까지 <b>통째로 복사</b>해 메모장에 붙여 두기 → <b>콘솔로 이동</b></li></ol>
+    <div class="shots">
+      <figure><img src="img/fb-06-addapp.jpg" alt="❶ 앱 추가" loading="lazy"><figcaption>❶ 앱 추가</figcaption></figure>
+      <figure><img src="img/fb-07-web.jpg" alt="❷ &lt;/&gt; (웹) 아이콘" loading="lazy"><figcaption>❷ &lt;/&gt; (웹) 아이콘</figcaption></figure>
+      <figure><img src="img/fb-08-register.jpg" alt="❸ 앱 닉네임 입력 (호스팅은 체크하지 않음) → ❹ 앱 등록" loading="lazy"><figcaption>❸ 앱 닉네임 입력 (호스팅은 체크하지 않음) → ❹ 앱 등록</figcaption></figure>
+      <figure><img src="img/fb-09-config.jpg" alt="❺ &lt;script&gt; 태그 사용 → ❻ firebaseConfig 부분 복사(캡처에서는 값을 가렸어요) → ❼ 콘솔로 이동" loading="lazy"><figcaption>❺ &lt;script&gt; 태그 사용 → ❻ firebaseConfig 부분 복사(캡처에서는 값을 가렸어요) → ❼ 콘솔로 이동</figcaption></figure>
+    </div>
+    <p class="tip">설정 코드는 나중에 <b>⚙ 프로젝트 설정 → 일반 → 내 앱</b>에서 다시 볼 수 있습니다. apiKey가 보여도 괜찮습니다. 웹 페이지에 드러나도록 만들어진 '주소'이고, 데이터는 4단계 규칙이 지킵니다.</p>
+  </div></div>
+
+  <div class="step"><div class="no">3</div><div>
+    <h4>데이터 저장소(Firestore) 만들기</h4>
+    <ol><li>왼쪽 메뉴 <b>데이터베이스 및 스토리지 → Firestore</b> → <b>데이터베이스 만들기</b></li>
+    <li>버전은 <b>Standard</b> 그대로 → 다음</li>
+    <li>위치: <b>asia-northeast3 (Seoul)</b> → 다음 (한 번 정하면 바꿀 수 없어요)</li>
+    <li>시작 모드: <b>프로덕션 모드</b> → <b>만들기</b></li></ol>
+    <div class="callout gold"><b class="t">왜 테스트 모드가 아니라 프로덕션 모드?</b>테스트 모드는 처음엔 바로 되지만 <b>30일 뒤 갑자기 막혀서</b> 학기 중에 보드가 멈춥니다. 프로덕션 모드는 처음엔 잠겨 있지만, 바로 다음 4단계에서 기한 없는 규칙으로 바꾸면 계속 쓸 수 있습니다. 이미 테스트 모드로 만들었다면 4단계만 꼭 하세요.</div>
+    <div class="shots">
+      <figure><img src="img/fb-10-menu.jpg" alt="❶ 데이터베이스 및 스토리지 → ❷ Firestore" loading="lazy"><figcaption>❶ 데이터베이스 및 스토리지 → ❷ Firestore</figcaption></figure>
+      <figure><img src="img/fb-11-createdb.jpg" alt="❸ 데이터베이스 만들기" loading="lazy"><figcaption>❸ 데이터베이스 만들기</figcaption></figure>
+      <figure><img src="img/fb-12-standard.jpg" alt="❹ Standard 버전 → ❺ 다음" loading="lazy"><figcaption>❹ Standard 버전 → ❺ 다음</figcaption></figure>
+      <figure><img src="img/fb-13-seoul.jpg" alt="❻ 위치 목록 열기 → ❼ asia-northeast3 (Seoul)" loading="lazy"><figcaption>❻ 위치 목록 열기 → ❼ asia-northeast3 (Seoul)</figcaption></figure>
+      <figure><img src="img/fb-14-seoul-next.jpg" alt="❽ 다음" loading="lazy"><figcaption>❽ 다음</figcaption></figure>
+      <figure><img src="img/fb-15-production.jpg" alt="❾ 프로덕션 모드에서 시작 → ❿ 다음" loading="lazy"><figcaption>❾ 프로덕션 모드에서 시작 → ❿ 다음</figcaption></figure>
+      <figure><img src="img/fb-16-create.jpg" alt="⓫ 백업은 체크하지 않고 만들기" loading="lazy"><figcaption>⓫ 백업은 체크하지 않고 만들기</figcaption></figure>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">4</div><div>
+    <h4>규칙 바꾸기 <span class="badge b-must">꼭!</span></h4>
+    <ol><li>Firestore 위쪽 <b>규칙</b> 탭</li>
+    <li>아래 규칙을 복사 → 코드 창을 한 번 누르고 <kbd>Ctrl</kbd>+<kbd>A</kbd>(전체 선택) → <kbd>Ctrl</kbd>+<kbd>V</kbd>(붙여 넣기)로 통째로 바꾸기</li>
+    <li>위쪽 <b>게시</b> 클릭 → "게시된 변경사항이 반영되는 데 최대 1분" 알림이 뜨면 완료</li></ol>
+    <div class="prompt"><div class="label">보안 규칙 (규칙 탭에 통째로 붙여 넣기)</div><button class="copy">복사</button><pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /boards/{boardId} {
+      allow read, write: if true;
+      match /notes/{noteId} {
+        allow read: if true;
+        allow create: if request.resource.data.text is string
+                      &amp;&amp; request.resource.data.text.size() &gt; 0
+                      &amp;&amp; request.resource.data.text.size() &lt;= 200
+                      &amp;&amp; request.resource.data.likes == 0
+                      &amp;&amp; request.resource.data.hidden == false;
+        allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'hidden']);
+        allow delete: if true;
+      }
+    }
+  }
+}</pre></div>
+    <p class="tip">누구나 읽고 쓸 수 있지만, 200자 넘는 글과 공감 수 조작은 막고 기한도 없는 수업용 규칙입니다. 그래도 주소를 아는 사람은 글을 쓸 수 있으니 이름·연락처 같은 개인정보는 받지 마세요.</p>
+    <div class="shots">
+      <figure><img src="img/fb-17-rules.jpg" alt="❶ 규칙 탭 → ❷ 위 규칙을 통째로 붙여 넣기 → ❸ 게시" loading="lazy"><figcaption>❶ 규칙 탭 → ❷ 위 규칙을 통째로 붙여 넣기 → ❸ 게시</figcaption></figure>
+      <figure><img src="img/fb-18-published.jpg" alt=""게시된 변경사항이 반영되는 데 최대 1분" 알림이 뜨면 완료" loading="lazy"><figcaption>"게시된 변경사항이 반영되는 데 최대 1분" 알림이 뜨면 완료</figcaption></figure>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">5</div><div>
+    <h4>익명 로그인 켜기 <span class="badge b-must">꼭!</span></h4>
+    <p>제미나이가 만든 연결 코드는 학생을 '익명 손님'으로 로그인시키는 경우가 많습니다. 이 설정을 켜지 않으면 <b>로그인 오류가 나고 포스트잇이 붙지 않습니다.</b></p>
+    <ol><li>왼쪽 메뉴 <b>보안 → Authentication</b> (처음이면 <b>시작하기</b> 클릭)</li>
+    <li>제공업체 목록이 나오면 기본 제공업체의 <b>익명</b> 클릭<br><small>(목록이 안 보이면 위쪽 <b>로그인 방법</b> 탭 → <b>새 제공업체 추가</b>)</small></li>
+    <li><b>사용 설정</b> 스위치를 켜고 → <b>저장</b></li>
+    <li>목록에 '익명 · 사용 설정됨'이 보이면 완료</li></ol>
+    <p class="tip">캡처의 <b style="color:#c62828">빨간 네모</b>가 누를 곳이고, 번호는 누르는 순서입니다.</p>
+    <div class="shots">
+      <figure><img src="img/fb-19-authmenu.jpg" alt="보안 메뉴에서 Authentication" loading="lazy"><figcaption>❶ 보안 → ❷ Authentication</figcaption></figure>
+      <figure><img src="img/fb-20-start.jpg" alt="Authentication 시작하기" loading="lazy"><figcaption>❸ 처음이면 시작하기</figcaption></figure>
+      <figure><img src="img/fb-anon-1-provider.jpg" alt="로그인 제공업체 선택 화면에서 기본 제공업체의 익명 항목" loading="lazy"><figcaption>❹ 기본 제공업체의 익명</figcaption></figure>
+      <figure><img src="img/fb-anon-2-toggle.jpg" alt="익명 제공업체의 사용 설정 스위치가 켜진 화면" loading="lazy"><figcaption>❺ 사용 설정 켜기 → ❻ 저장</figcaption></figure>
+      <figure><img src="img/fb-anon-3-done.jpg" alt="로그인 제공업체 목록에 익명 사용 설정됨이 표시된 화면" loading="lazy"><figcaption>'익명 사용 설정됨' 알림과 목록의 '사용 설정됨'이 보이면 완료</figcaption></figure>
+    </div>
+    <p class="tip">이 단계를 빼먹으면 화면에 <code>auth/admin-restricted-operation</code> 같은 오류가 뜹니다. '자동 정리 사용 설정'은 체크하지 않아도 됩니다. 화면 위쪽의 'Google 계정으로 로그인' 권장 안내도 무시하세요.</p>
+  </div></div>
+
+  <div class="step"><div class="no">6</div><div>
+    <h4>내 보드의 창고를 바꾸기</h4>
+    <p>방금 2단계에서 복사해 둔 <b>내 설정 코드</b>로 바꿔 달라고 부탁하고, 다시 저장해 넷리파이에 올리면 됩니다.</p>
+    <div class="prompt"><div class="label">창고 바꾸기 부탁문</div><button class="copy">복사</button><pre>지금 보드의 디자인과 기능은 그대로 두고, firebaseConfig만 아래 내 설정 코드로 바꿔 줘. 다른 Firebase 설정이나 실행 환경 변수는 쓰지 마.
+
+[firebaseConfig]
+(여기에 내 프로젝트의 firebaseConfig를 붙여 넣기)</pre></div>
+    <p class="tip">길 B 완성본을 쓰셨다면 메모장으로 열어 <code>const firebaseConfig = {...};</code>만 내 것으로 바꾸면 됩니다.</p>
+  </div></div>
+</section>
+
+<!-- STEP 3 -->
+<section id="s3">
+  <h2 class="sec">③ 넷리파이 배포 <span class="time">20분</span></h2>
+  <p class="lead">내 파일을 인터넷에 올려 학생들이 휴대폰으로 들어올 수 있는 주소를 받습니다.</p>
+
+  <div class="step"><div class="no">1</div><div>
+    <h4>배포할 폴더 만들기</h4>
+    <p>바탕화면에 새 폴더 <code>내포스트잇보드</code>를 만들고 그 안에 <code>index.html</code>을 넣습니다.</p>
+    <p class="tip">파일 이름은 반드시 <b>index.html</b>. 다운로드하다 <code>index (1).html</code>이 되었다면 이름을 고쳐 주세요.</p>
+  </div></div>
+
+  <div class="step"><div class="no">2</div><div>
+    <h4>넷리파이 가입</h4>
+    <ol><li><a href="https://app.netlify.com" target="_blank">app.netlify.com</a> 접속</li>
+    <li><b>❶ Log in with Google</b>을 누르고 개인 Gmail로 로그인 (처음이어도 Sign up을 따로 누를 필요 없이 이것만으로 가입까지 됩니다)</li>
+    <li>처음이면 간단한 질문 화면이 나와요: 이름(구글 계정에서 자동으로 채워짐) 확인 → 용도 <b>School</b> → 경험 <b>Beginner</b> → 만들 것 <b>Web app</b> → 역할 <b>Teacher</b> → 알게 된 곳 <b>Someone else</b> → 아래로 내려 계속</li></ol>
+    <div class="shots"><figure><img src="img/netlify-login.png" alt="넷리파이 로그인 화면의 Log in with Google 버튼과 Sign up" loading="lazy"><figcaption>❶ Log in with Google만 누르면 로그인과 가입이 한 번에 됩니다.</figcaption></figure><figure><img src="img/netlify-onboard.png" alt="넷리파이 첫 로그인 때 나오는 이름, 용도, 경험 질문 화면" loading="lazy"><figcaption>처음 로그인하면 나오는 질문: 이름 확인 → School → Beginner(빨간 네모) → 아래로 내려 다음 질문으로.</figcaption></figure><figure><img src="img/netlify-onboard2.png" alt="넷리파이 첫 로그인 질문 이어서: Web app, Teacher, Someone else" loading="lazy"><figcaption>이어지는 질문: 만들 것 <b>Web app</b> → 역할 <b>Teacher</b> → 알게 된 곳 <b>Someone else</b> → 맨 아래 팀 이름은 비워 두거나 아무거나 쓰고 계속</figcaption></figure></div>
+    <p class="tip">연수 전에 미리 한 번 로그인해 두시면 당일이 더 빨라요.</p>
+  </div></div>
+
+  <div class="step"><div class="no">3</div><div>
+    <h4>폴더를 끌어다 놓기</h4>
+    <ol><li>질문이 끝나면 <b>Deploy your first project</b> 화면이 나와요. 위쪽 <b>Skip this step for now</b>를 누르세요.</li>
+    <li><b>Projects</b> 화면 아래쪽 <b>Upload your project files</b> 칸에 바탕화면의 <code>내포스트잇보드</code> 폴더를 <b>끌어다 놓기</b></li>
+    <li>몇 초 뒤 <code>https://○○○.netlify.app</code> 주소가 생기면 성공</li></ol>
+    <div class="shots"><figure><img src="img/netlify-onboard3.png" alt="넷리파이 Deploy your first project 화면의 Skip this step for now" loading="lazy"><figcaption>❷ Skip this step for now 누르기 (AI 에이전트 칸은 쓰지 않아요)</figcaption></figure><figure><img src="img/netlify-projects.png" alt="넷리파이 Projects 화면의 Upload your project files 칸" loading="lazy"><figcaption>❸ 빨간 네모 칸에 폴더를 끌어다 놓기</figcaption></figure><figure><img src="img/netlify-drop.png" alt="app.netlify.com/drop 의 Drag and drop 화면" loading="lazy"><figcaption>또는 app.netlify.com/drop 화면 한가운데 <b>Drop here</b>에 끌어다 놓아도 같아요 (오른쪽 위에 내 동그라미 프로필이 보이면 로그인된 상태)</figcaption></figure></div>
+    <p class="tip">길을 잃었다면 <a href="https://app.netlify.com/drop" target="_blank">app.netlify.com/drop</a>으로 바로 가셔도 똑같아요. 단, 로그인한 상태에서 올려야 사이트가 사라지지 않습니다.</p>
+    <div class="shots"><figure><img src="img/netlify-done.png" alt="넷리파이 배포 완료 화면 Your project is ready와 사이트 주소" loading="lazy"><figcaption>❹ <b>Your project is ready!</b> 빨간 네모가 내 보드 주소예요. 옆 복사 버튼으로 복사해 두세요. 오른쪽에 내 보드가 미리 보입니다.</figcaption></figure></div>
+    <p class="warn" style="border:2px solid #e11d48;border-radius:12px;padding:12px 14px;background:#fff1f2;color:#9f1239;font-weight:600">⚠️ 꼭 하기: 처음 올린 보드는 <b>나만 볼 수 있게(Private)</b> 잠겨 있어요. 오른쪽 아래 바의 <b>Make public</b>을 눌러 공개로 바꿔야 학생들이 들어올 수 있습니다. 바꾼 뒤 <b>휴대폰</b>(넷리파이 로그인 안 된 상태)으로 주소를 열어 보드가 바로 보이면 성공. 넷리파이 로그인 화면이 뜨면 아직 잠긴 상태예요.</p>
+  </div></div>
+
+  <div class="step"><div class="no">4</div><div>
+    <h4>주소를 알아보기 쉽게 바꾸고 서로 붙여 보기</h4>
+    <ol><li>지금 주소 <code>remarkable-hummingbird-6af788.netlify.app</code>처럼 넷리파이가 아무렇게나 붙인 앞부분을 외우기 쉬운 이름으로 바꿉니다. 뒤의 <code>.netlify.app</code>은 그대로예요.
+      <br>완료 화면 <b>Domain</b> 칸 오른쪽 <b>Edit</b> → 앞부분을 지우고 새 이름 쓰기 (예: <code>daejin-vibe</code>, 영문 소문자·숫자·하이픈만) → 아래에 초록색 <b>Project name is available</b>이 뜨면 오른쪽 <b>✓</b> 누르기. 이미 누가 쓰는 이름이면 숫자를 붙여 보세요 (예: <code>daejin-vibe-7</code>)
+      <div class="shots"><figure><img src="img/netlify-rename.png" alt="넷리파이 Domain 칸 Edit, 이름 지우기, 새 이름 입력 후 체크 버튼" loading="lazy"><figcaption>Edit → 기존 이름 지우기 → 새 이름 쓰고 <b>Project name is available</b> 확인 후 ✓ 누르기</figcaption></figure></div></li>
+    <li>주소를 옆 교수님과 바꿔 휴대폰으로 서로의 보드에 포스트잇 붙이기</li>
+    <li>내 보드에서 🔒 대시보드를 열어 통계가 바뀌는지 보기</li></ol>
+    <p class="tip">파일을 고친 뒤 다시 올릴 때는 프로젝트의 <b>배포(Deploys)</b> 화면에 폴더를 다시 끌어다 놓으면 같은 주소로 바뀝니다.</p>
+    <p class="okline">✓ 휴대폰에서 내 주소로 들어가 포스트잇이 붙으면 오늘 목표 완성!</p>
+  </div></div>
+</section>
+
+<!-- STEP 4 -->
+<section id="s4">
+  <h2 class="sec">④ 내 수업으로 키우기 <span class="time">10분 · 선택</span></h2>
+  <p class="lead">배포까지 끝낸 분은 보드 위에 이번 주 수업 내용을 더해 '내 수업 전용 웹페이지'로 키워 봅니다. 매주 내용을 바꾸고 다시 올리는 것이 실제로 이 도구를 쓰는 모습입니다. 오늘 못 하셔도 집에서 그대로 따라 하시면 됩니다.</p>
+
+  <div class="step"><div class="no">1</div><div>
+    <h4>먼저 백업하기</h4>
+    <p>바탕화면 <code>내포스트잇보드</code> 폴더의 <code>index.html</code>을 복사해 <code>index_완성1.html</code>로 이름을 바꿔 다른 곳(바탕화면 등)에 두세요.</p>
+    <p class="tip">AI가 고치다 파이어베이스 연결을 망가뜨려도 이 파일로 바로 돌아갈 수 있습니다.</p>
+  </div></div>
+
+  <div class="step"><div class="no">2</div><div>
+    <h4>넣을 내용 고르기</h4>
+    <p>아래 칸을 채우면 다음 단계의 부탁문이 바뀝니다. 과목과 주제는 ① 단계에서 고른 것이 그대로 들어갑니다.</p>
+    <div class="mine">
+      <div class="wide"><b class="ttl">① 수업 내용은 어디서 가져올까요?</b>
+        <div class="opts">
+          <label><input type="radio" name="src" value="file" checked> 강의자료 첨부</label>
+          <label><input type="radio" name="src" value="text"> 직접 쓴 내용</label>
+          <label><input type="radio" name="src" value="both"> 둘 다</label>
+        </div></div>
+      <label class="wide" id="myTextWrap">오늘 수업 내용 (핵심 개념, 강의 요약, 꼭 강조할 점 등을 자유롭게)
+        <textarea id="fMyText" rows="4" placeholder="예) 회귀계수 b는 X가 1 늘 때 Y의 평균 변화량. 결정계수 R²는 모형이 설명하는 변동의 비율. 상관계수 r과 기울기 b는 부호는 같지만 단위가 다르다."></textarea></label>
+      <div class="wide"><b class="ttl">② 무엇을 넣을까요? (여러 개 고르기)</b>
+        <div class="opts" id="parts">
+          <label><input type="checkbox" value="cards" checked> 핵심 개념 카드 3개</label>
+          <label><input type="checkbox" value="quiz" checked> 확인 퀴즈 3문항</label>
+          <label><input type="checkbox" value="summary"> 오늘 강의 3줄 요약</label>
+          <label><input type="checkbox" value="terms"> 용어 사전</label>
+          <label><input type="checkbox" value="todo"> 과제·공지</label>
+          <label><input type="checkbox" value="links"> 참고 자료 링크</label>
+        </div></div>
+      <label class="wide">③ 더 넣고 싶은 것 (선택: 과제 안내, 공지, 참고 링크, 원하는 분위기 등)
+        <textarea id="fExtra" rows="3" placeholder="예) 과제: 13주차 전까지 예제 데이터로 회귀분석 결과표 작성해 오기 / 참고 영상: https://..."></textarea></label>
+    </div>
+  </div></div>
+
+  <div class="step"><div class="no">3</div><div>
+    <h4>강의자료 첨부하고 부탁하기</h4>
+    <ol><li>제미나이 캔버스 대화창(파이어베이스를 연결한 그 대화)으로 돌아가기</li>
+    <li>강의자료를 쓰는 경우 입력창의 <b>+ → 파일 업로드</b>로 첨부 (PDF·PPT, 한글은 PDF로 저장해서)</li>
+    <li>아래 부탁문 복사해 붙여 넣고 보내기</li></ol>
+    <div class="prompt"><div class="label">부탁문 ④ 오늘의 수업 영역 추가</div><button class="copy">복사</button><pre id="contentPrompt"></pre></div>
+    <p>실습용 자료가 없다면 가상 강의자료로 해 보세요. 이때는 ① 단계 과목 버튼도 <b>보건의료통계 입문</b>으로 맞춰 주세요.</p>
+    <a class="dl alt" href="files/lecture-stats-week12.pdf" target="_blank">[가상] 보건의료통계 입문 12주차 강의자료 (PDF)</a>
+    <div class="callout blue"><b class="t">비교해 보기</b>자료를 첨부하지 않고 같은 부탁문을 보내면, AI가 그럴듯한 내용을 지어내거나 우리 수업과 다른 예시를 씁니다. 자료를 첨부하면 그 안의 용어와 예시로 만들어집니다. <b>중요한 내용일수록 근거 자료를 함께 주는 것</b>이 바이브코딩의 요령입니다.</div>
+  </div></div>
+
+  <div class="step"><div class="no">4</div><div>
+    <h4>확인하고 다시 배포하기</h4>
+    <ol><li>새 코드를 복사해 <code>내포스트잇보드</code> 폴더의 <code>index.html</code>에 덮어써 저장</li>
+    <li>파일을 열어 <b>포스트잇이 여전히 붙고 새로고침해도 남는지</b> 먼저 확인</li>
+    <li>넷리파이 프로젝트의 <b>배포(Deploys)</b> 화면에 폴더를 다시 끌어다 놓기 → 같은 주소에 새 내용이 반영됨</li></ol>
+    <p class="tip">포스트잇이 저장되지 않으면 백업 파일(index_완성1.html)로 되돌리고, 제미나이에게 "파이어베이스 연결이 끊겼어. 저장 기능을 원래대로 고쳐 줘"라고 부탁하세요.</p>
+    <p class="okline">✓ 휴대폰에서 내 주소를 새로고침했을 때 수업 내용이 보이면 완성!</p>
+  </div></div>
+</section>
+
+<!-- 마무리 -->
+<section id="end">
+  <h2 class="sec">수업에 쓰기 <span class="time">15분</span></h2>
+
+  <h3>꼭 알아 둘 세 가지</h3>
+  <details open><summary><span class="badge b-must">필수</span> 공유하기 전에 네 가지 점검</summary><div class="body">
+    <ul><li><b>기능</b> — 포스트잇 붙이기, 공감, 대시보드가 처음부터 끝까지 막힘없이 되나요?</li>
+    <li><b>내용</b> — 오늘의 질문, 색깔 뜻, 수업 내용이 맞나요?</li>
+    <li><b>눈높이</b> — 학생이 휴대폰으로 읽고 누르기 편한가요? 갤럭시 폰(삼성 인터넷)에서도 QR로 열어 보세요.</li>
+    <li><b>개인정보</b> — 학번·연락처·사진을 넣게 하는 칸은 없나요?</li></ul>
+    <p>수업 중에 쓰는 순간, 책임은 만든 사람에게 있습니다. 학기가 끝나 보드를 닫고 싶으면 제미나이에게 "모든 읽기와 쓰기를 막는 Firestore 규칙"을 받아 같은 방법(규칙 탭 → 통째로 붙여 넣기 → 게시)으로 바꾸세요.</p>
+  </div></details>
+  <details><summary><span class="badge b-must">필수</span> 비밀번호는 '간이 잠금'입니다</summary><div class="body">
+    <p>비밀번호가 웹페이지 코드 안에 들어 있어서, 마음먹은 학생은 '페이지 소스 보기'로 찾을 수 있습니다. 수업 의견 보드로는 충분하지만, <b>성적·평가처럼 중요한 정보는 이 방식으로 다루지 마세요.</b> 진짜 잠금이 필요하면 '구글 로그인(Firebase Authentication)'을 붙여야 합니다.</p>
+  </div></details>
+  <details><summary><span class="badge b-must">필수</span> 개인정보는 받지 않기</summary><div class="body">
+    <p>학번·연락처는 받지 마세요. 이름 칸은 비워 두면 '익명'으로 붙도록 되어 있습니다. 수업이 끝나면 CSV로 내려받아 보관하고, 대시보드에서 삭제하세요.</p>
+  </div></details>
+
+  <h3>이렇게 써 보세요</h3>
+  <div class="uses">
+    <div><b>수업 시작 질문</b><p>"지난 시간에 배운 것 중 헷갈리는 것은?"</p></div>
+    <div><b>중간 이해도 점검</b><p>색깔을 이해됨/헷갈림으로 바꾸고 막대그래프로 바로 확인</p></div>
+    <div><b>토의 결과 모으기</b><p>팀별로 다른 보드 주소 쓰기: 주소 끝에 <code>?board=team1</code></p></div>
+    <div><b>수업 마무리 한 줄</b><p>공감 TOP 5를 다음 시간 첫 화면에 띄우기</p></div>
+  </div>
+  <div class="prompt"><div class="label">더 해 보고 싶다면 (응용 부탁문)</div><button class="copy">복사</button><pre>이 포스트잇 보드에 교수 대시보드에서 '받기 멈춤/다시 받기' 버튼을 추가해 줘. 멈춤 상태에서는 학생 화면의 입력창이 잠기고 "지금은 의견을 받지 않아요"가 보이게 해 줘. 데이터는 boards/class1 문서의 open 필드에 저장해 줘.</pre></div>
+</section>
+
+<!-- 막혔을 때 -->
+<section id="help">
+  <h2 class="sec">막혔을 때</h2>
+  <div class="callout gold"><b class="t">제미나이에게 고쳐 달라고 말하는 법</b>
+    <ul><li>"안 돼요" 대신 <b>어디서 → 지금은 → 원하는 것</b>: "붙이기 버튼을 누르면(어디서) 포스트잇이 안 보이고 화면이 그대로야(지금은). 누르자마자 보드에 새 포스트잇이 나타나게 해 줘(원하는 것)."</li>
+    <li>오류 글자가 보이면 그대로 복사하거나 화면을 캡처해서 "이 오류를 고쳐 줘"</li>
+    <li>고쳤더니 다른 곳이 망가지면 캔버스 위쪽의 <b>이전 버전</b>으로 돌아가고, 요청을 더 작게 나누기</li>
+    <li>부탁하지 않은 곳까지 바뀌면 "○○은 그대로 두고 △△만 바꿔 줘"</li></ul></div>
+  <details><summary><code>auth/admin-restricted-operation</code> 오류가 나요</summary><div class="body"><p><b>익명 로그인</b>이 꺼져 있습니다. ②+ 5단계대로 Authentication → 로그인 방법 → 익명 → 사용 설정 → 저장 하세요.</p></div></details>
+  <details><summary><code>permission-denied</code> 또는 missing or insufficient permissions 오류가 나요</summary><div class="body"><p><b>규칙</b>이 막혀 있습니다. 프로덕션 모드로 만들고 규칙을 안 바꿨거나, 테스트 모드 30일이 지난 경우입니다. ②+ 4단계대로 규칙을 통째로 바꾸고 게시하세요. 규칙을 바꿨는데도 나면 제미나이에게 규칙을 붙여 주고 "이 보안 규칙에 맞게 코드를 고쳐 줘"라고 부탁하세요.</p></div></details>
+  <details><summary>파이어베이스에 들어가지지 않아요 / 권한이 없다고 나와요</summary><div class="body"><p>학교 계정으로 로그인되어 있을 가능성이 큽니다. 크롬 프로필을 개인 Gmail로 바꾸거나 시크릿 창에서 개인 Gmail로 로그인하세요.</p></div></details>
+  <details><summary>캔버스에선 되는데 파일로 열면 저장이 안 돼요</summary><div class="body"><ul><li><b>익명 로그인</b>을 켰는지 확인 (Authentication → 로그인 방법에 '익명 · 사용 설정됨')</li><li><b>규칙</b>을 바꾸고 게시했는지 확인 (②+ 4단계, 내 창고를 쓰는 경우)</li><li>firebaseConfig를 <b>내 것으로</b> 정확히 붙였는지 확인 (따옴표·쉼표 빠짐 주의)</li><li>부탁문 ② 마지막 줄("다른 Firebase 설정이나 실행 환경 변수는 쓰지 말고")을 넣었는지 확인</li></ul></div></details>
+  <details><summary>파일을 열었더니 화면이 비어 있어요</summary><div class="body"><p>메모장에서 붙여 넣을 때 코드 일부가 빠졌을 수 있습니다. 크롬에서 <kbd>F12</kbd> → Console의 빨간 글씨를 복사해 제미나이에게 "이 오류를 고쳐 줘"라고 붙여 넣으세요. 급하면 길 B 완성본을 쓰세요.</p></div></details>
+  <details><summary>넷리파이 주소에 들어가면 'Page not found'가 나와요</summary><div class="body"><p>폴더 안 파일 이름이 <b>index.html</b>인지 확인하고 폴더째 다시 끌어다 놓으세요.</p></div></details>
+  <details><summary>비밀번호를 바꾸고 싶어요</summary><div class="body"><p>길 B 완성본은 메모장에서 <code>const PASSWORD = "daejin1234";</code>를 바꿔 저장 후 넷리파이에 다시 올리세요. 길 A는 제미나이에게 "비밀번호를 ○○로 바꿔 줘"라고 부탁하세요.</p></div></details>
+</section>
+
+</div></main>
+
+<footer>대진대학교 교수 역량 강화 연수 · 오후반 · FlowDX 이애진 · <a href="mailto:ai@flowdx.kr">ai@flowdx.kr</a></footer>
+<script>
+(function(){
+  var C1 = "노랑=이해됨, 분홍=헷갈림, 하늘=질문, 연두=더 알고 싶음";
+  var S = [
+    ["보건의료통계 입문","12주차 · 단순 회귀분석","오늘 배운 회귀분석에서 가장 헷갈리는 것은?",C1,"보건과학대학"],
+    ["성인간호학Ⅱ","9주차 · 구획증후군 간호","구획증후군 사정에서 가장 놓치기 쉬운 것은?",C1,"보건과학대학"],
+    ["임상영양학","7주차 · 당뇨병 식사요법","당뇨 환자에게 식단을 설명할 때 가장 어려운 점은?",C1,"보건과학대학"],
+    ["파이썬 프로그래밍 기초","6주차 · 반복문(for·while)","반복문에서 아직 감이 안 오는 부분은?",C1,"AI융합대학"],
+    ["인터랙티브 디자인","8주차 · 사용자 경험(UX) 설계","오늘 본 사례 중 가장 좋았던 사용자 경험은?","노랑=좋았던 점, 분홍=아쉬운 점, 하늘=질문, 연두=적용 아이디어","인문예술대학"],
+    ["비판적 사고와 글쓰기","5주차 · 논증의 오류","일상에서 본 논리적 오류 사례를 하나 적어 주세요","노랑=사례, 분홍=헷갈림, 하늘=질문, 연두=반박 아이디어","상생교양대학"],
+    ["생활 속 행정법","10주차 · 행정심판과 행정소송","행정심판과 행정소송의 차이 중 헷갈리는 점은?",C1,"공공인재대학"],
+    ["무역실무와 e-비즈니스","6주차 · 인코텀즈","인코텀즈 조건 중 가장 헷갈리는 것은?",C1,"글로벌산업통상대학"],
+    ["중급 중국어 회화","7주차 · 식당에서 주문하기","오늘 배운 표현 중 실제로 써 보고 싶은 문장은?","노랑=써 보고 싶은 표현, 분홍=발음 어려움, 하늘=질문, 연두=더 알고 싶음","글로벌산업통상대학"],
+    ["문화예술교육의 이해","4주차 · 예술로 읽는 사회","오늘 작품을 보고 떠오른 질문은?","노랑=인상 깊은 점, 분홍=불편했던 점, 하늘=질문, 연두=연결되는 경험","상생교양대학"],
+    ["영유아 놀이와 미술","9주차 · 감각 놀이 활동 설계","현장에서 바로 해 보고 싶은 놀이 아이디어는?","노랑=놀이 아이디어, 분홍=걱정되는 점, 하늘=질문, 연두=필요한 재료","공공인재대학"],
+    ["평생교육 현장실습","6주차 · 프로그램 기획안 작성","실습 기관에서 기획하고 싶은 프로그램은?","노랑=기획 아이디어, 분홍=어려운 점, 하늘=질문, 연두=필요한 도움","미래평생교육융합대학"],
+    ["캡스톤디자인","5주차 · 문제 정의와 아이디어 발산","우리 지역에서 해결하고 싶은 문제는?","노랑=문제, 분홍=원인, 하늘=아이디어, 연두=필요한 자원","공통"],
+    ["자료구조","8주차 · 스택과 큐","스택과 큐 중 아직 헷갈리는 것은?",C1,"AI융합대학"],
+    ["프론트엔드 웹디자인","5주차 · CSS 레이아웃(Flex·Grid)","Flex와 Grid 중 더 헷갈리는 것은?",C1,"AI융합대학"],
+    ["AI빅데이터분석 프로그래밍","9주차 · 데이터 전처리(결측치·이상치)","전처리 단계에서 가장 막히는 부분은?",C1,"AI융합대학"],
+    ["디지털포렌식","6주차 · 디지털 증거 수집과 무결성(해시)","증거의 무결성을 지키는 과정에서 헷갈리는 점은?",C1,"AI융합대학"],
+    ["인공지능법과 미래사회","6주차 · AI 사고의 책임과 규제","자율주행차 사고, 책임은 누구에게 있을까요?","노랑=찬성 근거, 분홍=반대 근거, 하늘=질문, 연두=더 알고 싶음","공공인재대학"],
+    ["데이터 사이언스의 이해","7주차 · 메타데이터와 데이터 큐레이션","좋은 메타데이터의 조건 중 헷갈리는 것은?",C1,"공공인재대학"],
+    ["학교도서관 경영의 이해","10주차 · 독서교육 프로그램 기획","우리 학교도서관에 꼭 필요한 프로그램은?","노랑=아이디어, 분홍=어려운 점, 하늘=질문, 연두=필요한 자원","공공인재대학"],
+    ["보육학개론","4주차 · 보육 환경 구성","좋은 보육 환경의 조건으로 떠오르는 것은?",C1,"공공인재대학"],
+    ["전기전자공학개론","5주차 · 옴의 법칙과 키르히호프 법칙","회로 해석에서 가장 헷갈리는 것은?",C1,"공과대학"],
+    ["기계제도 및 CAD","7주차 · 투상법과 단면도","도면을 읽을 때 가장 막히는 부분은?",C1,"공과대학"],
+    ["AI활용 마이크로컨트롤러 응용","8주차 · 센서 입력과 제어","센서 값을 받아 제어하는 과정에서 헷갈리는 점은?",C1,"공과대학"],
+    ["교육방법 및 교육공학","9주차 · 수업 설계 모형(ADDIE)","ADDIE 단계 중 가장 어려운 단계는?",C1,"교직과"],
+    ["청소년 심리","6주차 · 청소년기 정체성 발달","정체성 발달 이론 중 현장에서 떠오른 사례는?","노랑=공감되는 점, 분홍=헷갈림, 하늘=질문, 연두=현장 사례","교직과"],
+    ["경영통계학","10주차 · 가설검정","p값과 유의수준, 어디가 헷갈리나요?",C1,"글로벌산업통상대학"],
+    ["국제금융론","8주차 · 환율 결정 이론","환율이 오르고 내리는 원리 중 헷갈리는 것은?",C1,"글로벌산업통상대학"],
+    ["국제협상세미나","7주차 · BATNA와 협상 전략","협상에서 BATNA를 활용한 사례를 떠올려 보세요","노랑=사례, 분홍=어려운 점, 하늘=질문, 연두=적용 아이디어","글로벌산업통상대학"],
+    ["대순사상과 상생 윤리","5주차 · 상생의 윤리와 공동체","일상에서 상생을 실천할 수 있는 방법은?","노랑=인상 깊은 점, 분홍=어려운 점, 하늘=질문, 연두=실천 아이디어","대순종학대학"],
+    ["사회복지학개론","6주차 · 사회복지 실천 분야","가장 관심 가는 사회복지 실천 분야는?",C1,"미래평생교육융합대학"],
+    ["상담심리학","7주차 · 공감적 경청","공감적 경청을 연습하며 가장 어려웠던 점은?","노랑=잘된 점, 분홍=어려운 점, 하늘=질문, 연두=더 연습할 것","미래평생교육융합대학"],
+    ["장애의 이해와 통합","5주차 · 장애 인식과 통합교육","통합교육 현장에서 가장 필요한 지원은?",C1,"미래평생교육융합대학"],
+    ["기본간호학","8주차 · 활력징후 측정","활력징후 측정에서 가장 헷갈리는 것은?",C1,"보건과학대학"],
+    ["보건의료법","6주차 · 의료인의 의무와 환자의 권리","환자의 권리 중 현장에서 지키기 어려운 것은?",C1,"보건과학대학"],
+    ["역학 및 건강증진","9주차 · 발생률과 유병률","발생률과 유병률의 차이, 어디가 헷갈리나요?",C1,"보건과학대학"],
+    ["식품가공 및 저장","7주차 · 식품 저장 원리(온도·수분)","식품 저장 원리 중 헷갈리는 것은?",C1,"보건과학대학"],
+    ["Learning & Teamwork","4주차 · 팀 역할과 갈등 조정","팀 활동에서 가장 어려운 점은?","노랑=잘된 점, 분홍=어려운 점, 하늘=질문, 연두=개선 아이디어","상생교양대학"],
+    ["알기 쉬운 저작권","6주차 · AI 생성물과 저작권","AI로 만든 이미지의 저작권, 어디가 헷갈리나요?",C1,"상생교양대학"],
+    ["연극의 이해","5주차 · 희곡 읽기와 인물 분석","오늘 읽은 장면에서 인물의 마음이 드러난 대사는?","노랑=인상 깊은 대사, 분홍=이해 안 된 부분, 하늘=질문, 연두=해석 아이디어","인문예술대학"],
+    ["웹툰창작연구","8주차 · 콘티와 연출","콘티를 짤 때 가장 막히는 부분은?","노랑=잘된 점, 분홍=어려운 점, 하늘=질문, 연두=참고하고 싶은 작품","인문예술대학"],
+    ["제품디자인 매니지먼트","7주차 · 사용자 조사와 페르소나","우리 제품의 페르소나를 한 줄로 쓴다면?","노랑=아이디어, 분홍=고민, 하늘=질문, 연두=필요한 조사","인문예술대학"],
+    ["생성형 AI 기초와 활용","3주차 · 프롬프트 작성 원리","오늘 써 본 프롬프트 중 가장 효과가 좋았던 것은?","노랑=잘된 점, 분홍=어려운 점, 하늘=질문, 연두=써 보고 싶은 곳","산학협력단"]
+  ];
+  var MAIN = 13;
+  var GROUPS = ["AI융합대학","공공인재대학","공과대학","교직과","글로벌산업통상대학","대순종학대학","미래평생교육융합대학","보건과학대학","상생교양대학","인문예술대학","산학협력단","공통"];
+  var BODY = "\n\n위 수업에서 쓸 '실시간 쌍방향 수업 보드'를 React·JSX 없이 HTML, CSS, 일반 JavaScript로 된 HTML 파일 하나로 만들어 줘. 학회 발표나 IT 서비스 소개 화면처럼 세련되고 고급스러운 느낌이어야 해.\n\n[디자인]\n- 어두운 남색 배경에 은은한 그라데이션과 빛 번짐 효과, 카드는 반투명 유리 느낌(글래스모피즘)\n- 포인트 색은 골드 한 가지, 글꼴은 Pretendard\n- 맨 위: 과목명 · 주차 · 오늘의 질문을 크게, 오른쪽에 '● LIVE' 표시가 깜빡이고, 그 옆에 실제로 붙은 포스트잇 개수를 '의견 N개'로 표시(지어낸 숫자는 쓰지 말고, 없으면 '의견 0개')\n- 포스트잇은 파스텔 4색(노랑·분홍·하늘·연두), 새로 붙을 때 위에서 살짝 떨어지며 흔들리는 애니메이션\n- 휴대폰에서도 깔끔하게\n\n[학생 화면]\n- 이름(선택, 비우면 익명)과 의견(200자까지) 쓰고 색깔 골라 '붙이기'\n- 포스트잇마다 ❤️ 공감 버튼(누르면 하트가 톡 튀는 효과)\n\n[교수 대시보드] 오른쪽 위 🔒 버튼 → 비밀번호 daejin1234\n- 숫자 카드 3개: 전체 의견, 공감 합계, 분홍 색깔 의견 비율(%)\n- 색깔별 비율 도넛 차트, 공감 많은 순 TOP 5\n- 의견에 자주 나온 단어를 크기로 보여 주는 워드클라우드\n- '발표 화면' 버튼: 입력창을 숨기고 포스트잇만 강의실 스크린에 꽉 차게\n- 오늘의 질문 바꾸기, 포스트잇 숨기기·삭제, CSV 내려받기\n\n[데이터] 포스트잇은 text, name, color, likes, hidden, createdAt 필드로 관리해 줘(나중에 Firebase에 연결할 거야).\n\n처음 열었을 때, 위 과목과 주제를 배우는 대학생이 실제로 쓸 법한 예시 포스트잇 8개가 4가지 색깔에 골고루 붙어 있게 해 줘. 그 주제의 실제 개념 용어를 넣어서 구체적으로 써 줘.";
+
+  var PARTS = {
+    cards: "핵심 개념 3개를 카드로 (개념 이름 + 두 줄 설명 + 예시 하나), 카드를 누르면 뒤집혀서 \"이 개념, 이해됐나요?\" 질문이 보이게",
+    quiz: "'확인 퀴즈' 3문항(객관식), 고르면 바로 정답과 해설",
+    summary: "'오늘 강의 3줄 요약'을 맨 위에",
+    terms: "주요 용어 5개를 '용어 사전'으로 (용어를 누르면 뜻이 펼쳐지게)",
+    todo: "'과제·공지' 칸을 눈에 띄게 (마감일이 있으면 D-day 표시)",
+    links: "'참고 자료' 칸에 링크를 버튼으로"
+  };
+  function buildContent(){
+    var src = (document.querySelector("input[name=src]:checked") || {}).value || "file";
+    var my = el("fMyText").value.trim(), extra = el("fExtra").value.trim();
+    el("myTextWrap").style.display = src === "file" ? "none" : "";
+    var subj = "'" + el("fSubject").value + "' " + el("fTopic").value;
+    var head = src === "file" ? "첨부한 " + subj + " 강의자료를 바탕으로"
+      : src === "text" ? "아래 [수업 내용]을 바탕으로 " + subj + " 수업의"
+      : "첨부한 " + subj + " 강의자료와 아래 [수업 내용]을 바탕으로";
+    var lines = [head + ", 보드 맨 위에 '오늘의 수업' 영역을 추가해 줘.", "- 파이어베이스 연결 코드와 포스트잇 저장 기능, 교수 대시보드는 절대 건드리지 말고 '오늘의 수업' 영역만 추가해 줘."];
+    [].forEach.call(document.querySelectorAll("#parts input:checked"), function(c){ lines.push("- " + PARTS[c.value]); });
+    lines.push("- 이 영역은 접었다 펼 수 있게 해 줘");
+    lines.push("- " + (src === "file" ? "강의자료" : src === "text" ? "[수업 내용]" : "강의자료와 [수업 내용]") + "에 없는 내용은 지어내지 말고, 거기 있는 것만 써 줘");
+    if (src !== "file") lines.push("", "[수업 내용]", my || "(여기에 오늘 수업 내용을 써 주세요)");
+    if (extra) lines.push("", "[추가로 넣을 것]", extra);
+    el("contentPrompt").textContent = lines.join("\n");
+  }
+  document.addEventListener("input", function(e){ if (e.target.id === "fMyText" || e.target.id === "fExtra") buildContent(); });
+  document.addEventListener("change", function(e){ if (e.target.name === "src" || e.target.closest("#parts")) buildContent(); });
+  var ids = ["fSubject","fTopic","fQuestion","fColors"];
+  var box = document.getElementById("subjects");
+  function el(id){ return document.getElementById(id); }
+  function esc(t){ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function hi(t){ return '<mark class="chg">'+esc(t)+'</mark>'; }
+  function build(){
+    el("mainPrompt").innerHTML = "- 과목: " + hi(el("fSubject").value) +
+      "\n- 주차와 주제: " + hi(el("fTopic").value) + "\n- 오늘의 질문: " + hi(el("fQuestion").value) +
+      "\n- 색깔 뜻: " + hi(el("fColors").value) + esc(BODY);
+    buildContent();
+  }
+  function allBtns(){ return document.querySelectorAll(".subjects button[data-i]"); }
+  function pick(i){
+    S[i].slice(0,4).forEach(function(v,k){ el(ids[k]).value = v; });
+    [].forEach.call(allBtns(), function(b){ b.classList.toggle("on", +b.dataset.i===i); });
+    build();
+  }
+  function mk(i){
+    var s = S[i], b = document.createElement("button"); b.type = "button"; b.dataset.i = i;
+    b.innerHTML = "<b></b><small></small>"; b.firstChild.textContent = s[0]; b.lastChild.textContent = s[1];
+    b.onclick = function(){ pick(i); }; return b;
+  }
+  for (var n = 0; n < MAIN; n++) box.appendChild(mk(n));
+  var all = el("allSubjects");
+  el("allCount").textContent = S.length;
+  GROUPS.forEach(function(g){
+    var idx = []; S.forEach(function(s,i){ if (s[4]===g) idx.push(i); });
+    if (!idx.length) return;
+    var h = document.createElement("h5"); h.textContent = g; all.appendChild(h);
+    var row = document.createElement("div"); row.className = "subjects";
+    idx.forEach(function(i){ row.appendChild(mk(i)); }); all.appendChild(row);
+  });
+  ids.forEach(function(id){ el(id).addEventListener("input", function(){
+    [].forEach.call(allBtns(), function(b){ b.classList.remove("on"); }); build(); }); });
+  var CFGTXT = "const firebaseConfig = {\n  apiKey: \"AIzaSyDM6GpTdFaLwRmtIDv7T0mAhTVtm08SrcE\",\n  authDomain: \"postit-demo-215f5.firebaseapp.com\",\n  projectId: \"postit-demo-215f5\",\n  storageBucket: \"postit-demo-215f5.firebasestorage.app\",\n  messagingSenderId: \"547065029518\",\n  appId: \"1:547065029518:web:a46d272b5572501b43fadf\"\n};";
+  function buildConnect(){
+    var raw=(el("fBoard").value||"").toLowerCase().replace(/[^a-z0-9-]/g,"").slice(0,40);
+    var ok=raw.length>=2 && raw!=="hong-gildong";
+    var id=ok?raw:"내-영문-이름을-먼저-쓰세요";
+    el("boardWarn").style.display=ok?"none":"";
+    var cb=el("connectPrompt").parentNode.querySelector("button.copy"); if(cb) cb.disabled=!ok;
+    el("boardEcho").textContent=id;
+    el("connectPrompt").innerHTML="지금 만든 수업 보드에 Firebase Firestore를 연결해 줘.\n- 디자인과 교수 대시보드는 지금 모습 그대로 두고, 포스트잇과 오늘의 질문을 저장하는 부분만 바꿔 줘.\n- React 없이 HTML, CSS, 일반 JavaScript로 된 HTML 파일 하나를 유지하고, Firebase SDK는 gstatic CDN 주소에서 불러와 줘.\n- 익명 로그인(signInAnonymously)을 한 뒤 저장해 줘.\n- 포스트잇은 boards/"+hi(id)+"/notes 컬렉션에, 오늘의 질문은 boards/"+hi(id)+" 문서의 question 필드에 저장해 줘.\n- 각 포스트잇에는 text, name, color, likes, hidden, createdAt(serverTimestamp) 필드를 쓰고, 새 포스트잇은 likes 0, hidden false로 저장해 줘.\n- onSnapshot으로 실시간 반영되게 하고, 공감은 increment로 올려 줘.\n- 코드에 들어 있는 예시 포스트잇은 지우고, 위쪽 '의견 N개'와 대시보드 숫자, 워드클라우드, AI 요약은 지어낸 내용 말고 실제 저장된 의견으로 계산해 줘.\n- 다른 Firebase 설정이나 실행 환경 변수는 쓰지 말고, 아래 firebaseConfig만 사용해 줘.\n\n[firebaseConfig]\n"+esc(CFGTXT);
+  }
+  el("fBoard").addEventListener("input",buildConnect);
+  buildConnect();
+  pick(0);
+})();
+</script>
+<div class="lb" id="lb" hidden><button type="button" aria-label="닫기">×</button><img alt=""><p></p></div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), im=lb.querySelector('img'), cap=lb.querySelector('p');
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    if(t.tagName==='IMG' && t.closest('figure') && !t.closest('#lb')){
+      im.src=t.currentSrc||t.src; im.alt=t.alt;
+      var fc=t.closest('figure').querySelector('figcaption'); cap.textContent=fc?fc.textContent:'';
+      lb.hidden=false; document.body.style.overflow='hidden';
+    } else if(t.closest && t.closest('#lb')){ close(); }
+  });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+  function close(){ lb.hidden=true; document.body.style.overflow=''; }
+})();
+</script>
+<div class="fontctl" id="fontCtl" role="group" aria-label="글자 크기">
+  <button type="button" id="fMinus" aria-label="글자 작게">가−</button>
+  <span id="fVal">110%</span>
+  <button type="button" id="fPlus" aria-label="글자 크게">가+</button>
+  <button type="button" class="reset" id="fReset" aria-label="기본 크기">기본</button>
+</div>
+<script>
+(function(){
+  var steps=[90,100,110,120,135,150,170], def=2, cur=def;
+  try{ var v=parseInt(localStorage.getItem('pmFontStep'),10); if(v>=0&&v<steps.length) cur=v; }catch(e){}
+  var parts=document.querySelectorAll('header.hero, nav.quick, main, footer');
+  function apply(){
+    var z=steps[cur]/100;
+    [].forEach.call(parts,function(p){ p.style.zoom=z; });
+    document.getElementById('fVal').textContent=steps[cur]+'%';
+    document.getElementById('fMinus').disabled=cur===0;
+    document.getElementById('fPlus').disabled=cur===steps.length-1;
+    try{ localStorage.setItem('pmFontStep',cur); }catch(e){}
+  }
+  document.getElementById('fMinus').onclick=function(){ if(cur>0){cur--;apply();} };
+  document.getElementById('fPlus').onclick=function(){ if(cur<steps.length-1){cur++;apply();} };
+  document.getElementById('fReset').onclick=function(){ cur=def; apply(); };
+  apply();
+})();
+</script>
+<script>
+(function(){
+  var b=document.getElementById('pwCopy'); if(!b) return;
+  b.addEventListener('click',function(){
+    var t=document.getElementById('pwText').textContent.trim();
+    function ok(){ b.textContent='복사됨 ✓ 비밀번호 칸에 Ctrl+V'; b.classList.add('done'); setTimeout(function(){ b.textContent='비밀번호 복사'; b.classList.remove('done'); },2500); }
+    function fb(){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){ var r=document.createRange(); r.selectNodeContents(document.getElementById('pwText')); var sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); b.textContent='선택됨, Ctrl+C로 복사'; }
+      document.body.removeChild(ta); }
+    if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(t).then(ok,fb); } else fb();
+  });
+})();
+</script>
+<script>
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('.ex-copy'); if(!b) return;
+  var t=b.parentNode.querySelector('.tx').textContent;
+  function ok(){ b.textContent='복사됨 ✓'; b.classList.add('done'); setTimeout(function(){ b.textContent='복사'; b.classList.remove('done'); },1500); }
+  function fb(){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy'); ok();}catch(x){} document.body.removeChild(ta); }
+  if(navigator.clipboard&&window.isSecureContext){ navigator.clipboard.writeText(t).then(ok,fb); } else fb();
+});
+</script>
+<script>
+(function(){
+  var TABS=[
+    {id:'start',label:'시작하기',secs:['flow','try','vibe']},
+    {id:'s1',label:'① 화면 만들기',secs:['s1']},
+    {id:'s2',label:'② 파이어베이스',secs:['s2']},
+    {id:'s3',label:'③ 넷리파이 배포',secs:['s3']},
+    {id:'s4',label:'④ 내 수업으로 키우기',secs:['s4']},
+    {id:'s2x',label:'②+ 내 창고 만들기 (심화)',secs:['s2x'],adv:true},
+    {id:'end',label:'수업에 쓰기',secs:['end']},
+    {id:'help',label:'막혔을 때',secs:['help']}
+  ];
+  var bar=document.getElementById('tabbar'), cur=null;
+  function tabOf(secId){ for(var k=0;k<TABS.length;k++){ if(TABS[k].secs.indexOf(secId)>=0) return k; } return -1; }
+  TABS.forEach(function(t,k){
+    var b=document.createElement('button'); b.type='button'; b.textContent=t.label; if(t.adv) b.className='adv';
+    b.onclick=function(){ show(k,null,true); }; bar.appendChild(b); t.btn=b;
+    var last=document.getElementById(t.secs[t.secs.length-1]);
+    var nav=document.createElement('div'); nav.className='tabnav';
+    if(k>0){ var p=document.createElement('button'); p.type='button'; p.textContent='← '+TABS[k-1].label; p.onclick=function(){ show(k-1,null,true); }; nav.appendChild(p); }
+    if(k<TABS.length-1){ var n=document.createElement('button'); n.type='button'; n.className='next'; n.textContent=TABS[k+1].label+' →'; n.onclick=function(){ show(k+1,null,true); }; nav.appendChild(n); }
+    last.appendChild(nav);
+  });
+  function show(k,target,top){
+    cur=k;
+    TABS.forEach(function(t,i){ t.btn.classList.toggle('on',i===k); t.secs.forEach(function(id){ var el=document.getElementById(id); if(i===k) el.removeAttribute('data-hide'); else el.setAttribute('data-hide',''); }); });
+    TABS[k].btn.scrollIntoView({block:'nearest',inline:'center'});
+    try{ history.replaceState(null,'','#'+TABS[k].id); }catch(e){}
+    if(target){ target.scrollIntoView({block:'start'}); }
+    else if(top){ var m=document.querySelector('main'); window.scrollTo(0, m.getBoundingClientRect().top+window.scrollY-60); }
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href').slice(1); var el=id&&document.getElementById(id); if(!el) return;
+    var sec=el.closest('section'); var k=sec?tabOf(sec.id):-1; if(k<0) return;
+    e.preventDefault(); show(k, sec.id===id?null:el, true);
+  });
+  var h=(location.hash||'').slice(1), start=0;
+  if(h){ var el=document.getElementById(h); var sec=el&&el.closest('section'); if(sec){ var k=tabOf(sec.id); if(k>=0) start=k; } else { TABS.forEach(function(t,i){ if(t.id===h) start=i; }); } }
+  show(start);
+  window.addEventListener('hashchange',function(){ var h=location.hash.slice(1); var el=document.getElementById(h); var sec=el&&el.closest('section'); var k=sec?tabOf(sec.id):-1; if(k<0) TABS.forEach(function(t,i){ if(t.id===h) k=i; }); if(k>=0&&k!==cur) show(k,null,true); });
+})();
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>
