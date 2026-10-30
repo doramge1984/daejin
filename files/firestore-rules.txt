@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /boards/{boardId} {
+      // 오늘의 질문 (교수 대시보드에서 바꿈)
+      allow read, write: if true;
+
+      match /notes/{noteId} {
+        allow read: if true;
+        // 새 포스트잇: 내용 1~200자, 공감 0으로 시작
+        allow create: if request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() <= 200
+                      && request.resource.data.likes == 0
+                      && request.resource.data.hidden == false;
+        // 수정: 공감 수와 숨기기만 바꿀 수 있음
+        allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'hidden']);
+        allow delete: if true;
+      }
+    }
+  }
+}

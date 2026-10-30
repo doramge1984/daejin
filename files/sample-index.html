@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1분 이해도 체크 · 보건의료통계 입문</title>
+<style>
+:root{--bg:#f4f7f5;--card:#fff;--ink:#1f2a24;--sub:#5d6b63;--line:#dfe7e2;--accent:#2f7a5b;--soft:#e7f3ed;--bad:#c2410c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.6}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+.tag{font-size:.82rem;color:var(--accent);font-weight:700}
+h1{font-size:1.5rem;margin:2px 0 4px}
+.lead{color:var(--sub);margin:0 0 14px}
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;cursor:pointer;font-size:.95rem}
+.tabs button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+label.q{display:block;font-weight:700;margin-bottom:8px}
+select,input,textarea{font:inherit;font-size:1rem;border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;background:#fff}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>div{flex:1;min-width:160px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.scale button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 4px;font-size:1.3rem;font-weight:800;cursor:pointer}
+.scale button small{display:block;font-size:.7rem;font-weight:500;color:var(--sub)}
+.scale button.on{background:var(--accent);border-color:var(--accent);color:#fff}.scale button.on small{color:#e3f2ea}
+.primary{width:100%;background:var(--accent);color:#fff;border:0;border-radius:12px;padding:14px;font-size:1.05rem;font-weight:700;cursor:pointer}
+.msg{margin-top:10px;font-weight:700}.warn{color:var(--bad)}.ok{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--soft);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.7rem;color:var(--accent)}.stat.red b{color:var(--bad)}
+.dist div{display:grid;grid-template-columns:24px 1fr 26px;gap:8px;align-items:center;margin-bottom:6px;font-size:.9rem}
+.bar{height:14px;background:#edf2ef;border-radius:7px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
+ul.list{margin:6px 0 0;padding-left:18px}ul.list li{margin:4px 0}
+.note{font-size:.8rem;color:var(--sub);text-align:center;margin-top:18px}
+svg text{font-size:11px;fill:#5d6b63}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">[가상] 보건의료통계 입문 · 2학년</div>
+  <h1>1분 이해도 체크</h1>
+  <p class="lead">솔직하게 쓸수록 다음 수업이 쉬워집니다.</p>
+  <div class="tabs"><button class="on" data-t="s">학생 화면</button><button data-t="p">교수 모아보기</button></div>
+
+  <section id="s">
+    <div class="card row">
+      <div><label class="q">주차</label><select id="wk"></select></div>
+      <div><label class="q">출석 번호</label><select id="no"><option value="">선택</option></select></div>
+    </div>
+    <div class="card"><label class="q">① 오늘 이해도</label>
+      <div class="scale" id="scale"></div></div>
+    <div class="card"><label class="q">② 오늘 내용을 한 문장으로 설명한다면?</label><input id="one" placeholder="예) 표본이 클수록 신뢰구간이 좁아진다"></div>
+    <div class="card"><label class="q">③ 가장 헷갈린 부분</label><input id="conf" placeholder="예) 95%가 무엇의 확률인지"></div>
+    <div class="card"><label class="q">④ 교수님께 묻고 싶은 것 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input id="ask"></div>
+    <button class="primary" id="send">제출하기</button>
+    <div class="msg" id="msg"></div>
+  </section>
+
+  <section id="p" hidden>
+    <div class="card row" style="align-items:flex-end">
+      <div><label class="q">주차 선택</label><select id="pw"></select></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span>제출 수</span><b id="n">0</b></div>
+      <div class="stat"><span>평균 이해도</span><b id="avg">-</b></div>
+      <div class="stat red"><span>이해도 2 이하</span><b id="low">0</b></div>
+    </div>
+    <div class="card" style="margin-top:12px"><b>이해도 분포</b><div class="dist" id="dist" style="margin-top:8px"></div></div>
+    <div class="card"><b>가장 헷갈린 부분</b><ul class="list" id="confl"></ul></div>
+    <div class="card"><b>질문</b><ul class="list" id="askl"></ul></div>
+    <div class="card"><b>주차별 평균 이해도</b><div id="line"></div></div>
+  </section>
+  <p class="note">연수 시연용 완성 예시 · 가상 데이터 · 실제 도구에서는 제출이 저장소에 쌓이고 교수 모아보기는 교수 계정만 봅니다.</p>
+</div>
+<script>
+const WEEKS=['1 오리엔테이션, 보건의료와 통계','2 자료의 종류와 측정 수준','3 기술통계: 평균, 중앙값, 표준편차','4 그래프로 자료 보기, 왜곡된 그래프','5 확률과 정규분포','6 표본과 표집분포, 표본 크기','7 신뢰구간의 의미','8 중간고사','9 가설검정의 논리, p값','10 두 집단 평균 비교 (t검정)','11 범주형 자료: 카이제곱 검정, 2×2 분할표','12 상대위험도와 오즈비','13 상관과 단순회귀 / 팀 논문 읽기 발표','14 논문 속 통계 비판적으로 읽기','15 기말고사'];
+const $=id=>document.getElementById(id);
+WEEKS.forEach(w=>{$('wk').insertAdjacentHTML('beforeend',`<option>${w}</option>`);$('pw').insertAdjacentHTML('beforeend',`<option>${w}</option>`)});
+$('wk').value=WEEKS[6];$('pw').value=WEEKS[6];
+for(let i=1;i<=50;i++)$('no').insertAdjacentHTML('beforeend',`<option>${i}</option>`);
+const LBL=['전혀 모르겠다','조금','반 정도','대부분','설명할 수 있다'];
+$('scale').innerHTML=LBL.map((l,i)=>`<button type="button" data-v="${i+1}">${i+1}<small>${l}</small></button>`).join('');
+let score=null;
+document.querySelectorAll('#scale button').forEach(b=>b.onclick=()=>{score=+b.dataset.v;document.querySelectorAll('#scale button').forEach(x=>x.classList.toggle('on',x===b))});
+// 가상 데이터
+const D=[];
+function seed(w,arr){arr.forEach(([s,c,a])=>D.push({wk:WEEKS[w],s,conf:c,ask:a||''}))}
+seed(4,[[4,'정규분포에서 표준편차의 의미'],[5,'z점수 계산'],[3,'정규분포에서 표준편차의 의미'],[4,'확률과 비율의 차이']]);
+seed(5,[[3,'표본 크기와 표준오차의 관계','표준오차랑 표준편차가 왜 다른가요?'],[2,'표집분포가 무엇인지'],[4,'표본 크기와 표준오차의 관계'],[3,'표집분포가 무엇인지'],[4,'모집단과 표본의 차이']]);
+seed(6,[[3,'95%가 무엇의 확률인지','신뢰구간 안에 모평균이 있을 확률이 95%인가요?'],[2,'95%가 무엇의 확률인지'],[4,'표본 크기가 커지면 구간이 왜 좁아지는지'],[2,'신뢰수준과 신뢰구간의 차이','시험에 계산 문제가 나오나요?'],[5,'표본 크기가 커지면 구간이 왜 좁아지는지'],[3,'95%가 무엇의 확률인지'],[4,'신뢰수준과 신뢰구간의 차이']]);
+$('send').onclick=()=>{
+  const miss=[];if(!$('no').value)miss.push('출석 번호');if(!score)miss.push('① 이해도');if(!$('one').value.trim())miss.push('② 한 문장');if(!$('conf').value.trim())miss.push('③ 헷갈린 부분');
+  if(miss.length){$('msg').innerHTML='<span class="warn">아직 비어 있어요: '+miss.join(', ')+'</span>';return}
+  D.push({wk:$('wk').value,s:score,conf:$('conf').value.trim(),ask:$('ask').value.trim()});
+  $('msg').innerHTML='<span class="ok">고마워요! 다음 수업에 반영할게요.</span> <span style="color:var(--sub);font-weight:400">(교수 모아보기에서 확인해 보세요)</span>';
+  ['one','conf','ask'].forEach(i=>$(i).value='');score=null;document.querySelectorAll('#scale button').forEach(x=>x.classList.remove('on'));
+};
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function prof(){
+  const d=D.filter(x=>x.wk===$('pw').value);
+  $('n').textContent=d.length;$('avg').textContent=d.length?(d.reduce((a,x)=>a+x.s,0)/d.length).toFixed(1):'-';$('low').textContent=d.filter(x=>x.s<=2).length;
+  const m=Math.max(1,...[1,2,3,4,5].map(v=>d.filter(x=>x.s===v).length));
+  $('dist').innerHTML=[5,4,3,2,1].map(v=>{const c=d.filter(x=>x.s===v).length;return `<div><span>${v}</span><span class="bar"><i style="width:${c/m*100}%"></i></span><span>${c}</span></div>`}).join('');
+  const cnt={};d.forEach(x=>cnt[x.conf]=(cnt[x.conf]||0)+1);
+  $('confl').innerHTML=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<li>${esc(k)} <b>(${v}명)</b></li>`).join('')||'<li>아직 없음</li>';
+  $('askl').innerHTML=d.filter(x=>x.ask).map(x=>`<li>${esc(x.ask)}</li>`).join('')||'<li>아직 없음</li>';
+  const pts=WEEKS.map((w,i)=>{const z=D.filter(x=>x.wk===w);return z.length?{i,v:z.reduce((a,x)=>a+x.s,0)/z.length}:null}).filter(Boolean);
+  const W=600,H=160,px=i=>30+i*(W-50)/14,py=v=>H-25-(v-1)*(H-45)/4;
+  $('line').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%">${[1,2,3,4,5].map(v=>`<line x1="30" x2="${W-20}" y1="${py(v)}" y2="${py(v)}" stroke="#edf2ef"/><text x="10" y="${py(v)+4}">${v}</text>`).join('')}
+  <polyline fill="none" stroke="#2f7a5b" stroke-width="3" points="${pts.map(p=>px(p.i)+','+py(p.v)).join(' ')}"/>
+  ${pts.map(p=>`<circle cx="${px(p.i)}" cy="${py(p.v)}" r="5" fill="#2f7a5b"/><text x="${px(p.i)-8}" y="${H-6}">${p.i+1}주</text><text x="${px(p.i)-9}" y="${py(p.v)-10}" style="fill:#1f2a24;font-weight:700">${p.v.toFixed(1)}</text>`).join('')}</svg>`;
+}
+$('pw').onchange=prof;
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));$('s').hidden=b.dataset.t!=='s';$('p').hidden=b.dataset.t!=='p';if(b.dataset.t==='p')prof()});
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 수업 포스트잇 보드</title>
+<style>
+:root{--navy:#23303f;--gold:#bfa05f;--bg:#efe6d6;--line:#e3e0d6;--muted:#5b6672}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;background:var(--bg);color:#1f2933}
+header{background:var(--navy);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+header h1{font-size:18px;margin:0;flex:1}
+header button{border:1px solid #fff;background:transparent;color:#fff;border-radius:8px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+.demo{background:#fff3cd;color:#7a5b00;text-align:center;font-size:13px;padding:6px}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.question{background:#fff;border-left:6px solid var(--gold);border-radius:12px;padding:14px 18px;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:14px}
+form{background:#fff;border-radius:12px;padding:14px;display:grid;gap:10px;margin-bottom:18px}
+form textarea{width:100%;min-height:70px;font:inherit;font-size:16px;border:1px solid #cfd6df;border-radius:8px;padding:10px;resize:vertical}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row input[type=text]{flex:1;min-width:140px;font:inherit;border:1px solid #cfd6df;border-radius:8px;padding:8px 10px}
+.colors label{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 10px;font-size:14px;cursor:pointer;border:2px solid transparent}
+.colors input{display:none}
+.colors input:checked+span{font-weight:800}
+.colors label:has(input:checked){border-color:var(--navy)}
+.btn{white-space:nowrap;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:10px 20px;font:inherit;font-weight:700;cursor:pointer}
+.count{font-size:13px;color:var(--muted)}
+.wall{columns:240px;column-gap:14px}
+.note{break-inside:avoid;margin:0 0 14px;padding:14px 14px 10px;border-radius:4px;box-shadow:0 3px 8px rgba(0,0,0,.15);transform:rotate(var(--r));font-size:16px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.note .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px;color:#555}
+.note button{border:0;background:rgba(255,255,255,.6);border-radius:999px;padding:3px 10px;cursor:pointer;font:inherit;font-size:13px}
+.note button.on{background:#fff;font-weight:800}
+.c-yellow{background:#fff59d}.c-pink{background:#f8bbd0}.c-sky{background:#b3e5fc}.c-green{background:#c5e1a5}
+.empty{text-align:center;color:var(--muted);padding:30px}
+/* 교수 대시보드 */
+.modal{position:fixed;inset:0;background:rgba(15,23,32,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal[hidden]{display:none}
+.box{background:#fff;border-radius:14px;padding:20px;width:min(360px,100%)}
+.box input{width:100%;font:inherit;border:1px solid #cfd6df;border-radius:8px;padding:10px;margin:10px 0}
+.err{color:#c62828;font-size:14px;min-height:20px}
+#dash{background:#fff;border-radius:14px;padding:16px;margin-bottom:18px}
+#dash[hidden]{display:none}
+#dash h2{margin:0 0 12px;color:var(--navy);font-size:19px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.tile{background:#f5f6f8;border-radius:10px;padding:10px 12px}.tile b{display:block;font-size:26px;color:var(--navy)}
+.bars div{display:grid;grid-template-columns:90px 1fr 34px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.bars i{display:block;height:14px;border-radius:999px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px}
+.grid2 h3{font-size:15px;margin:0 0 6px;color:var(--navy)}
+ol.top{margin:0;padding-left:20px;font-size:14px}
+.qedit{display:flex;gap:8px}.qedit input{flex:1;font:inherit;border:1px solid #cfd6df;border-radius:8px;padding:8px}
+.list{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px}
+.list div{display:flex;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);font-size:14px}
+.list div.hid{opacity:.45}
+.list span{flex:1}
+.list button,.small{border:1px solid #cfd6df;background:#fff;border-radius:8px;padding:3px 8px;font:inherit;font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="title">우리 수업 포스트잇 보드</h1>
+  <button id="lockBtn">🔒 교수 대시보드</button>
+</header>
+<div class="demo" id="demoBar" hidden>체험 모드예요. 파이어베이스가 연결되지 않아 이 컴퓨터에만 저장됩니다.</div>
+
+<div class="wrap">
+  <!-- 교수 대시보드 (비밀번호 입력 후 보임) -->
+  <section id="dash" hidden>
+    <h2>교수 대시보드</h2>
+    <div class="tiles">
+      <div class="tile">전체 포스트잇<b id="tTotal">0</b></div>
+      <div class="tile">공감 합계<b id="tLikes">0</b></div>
+      <div class="tile">이름 쓴 학생<b id="tNames">0</b></div>
+    </div>
+    <div class="bars" id="bars"></div>
+    <div class="grid2">
+      <div><h3>공감 많은 순 TOP 5</h3><ol class="top" id="top5"></ol></div>
+      <div>
+        <h3>오늘의 질문 바꾸기</h3>
+        <div class="qedit"><input id="qInput"><button class="btn" id="qSave">저장</button></div>
+        <p style="margin:12px 0 0"><button class="small" id="csvBtn">CSV로 내려받기</button> <button class="small" id="logout">대시보드 닫기</button></p>
+      </div>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <div class="question" id="question">오늘 수업에서 가장 기억에 남는 것은?</div>
+
+  <form id="form">
+    <textarea id="text" maxlength="200" placeholder="의견을 적어 주세요 (200자까지)" required></textarea>
+    <div class="row">
+      <input type="text" id="name" maxlength="20" placeholder="이름 (비워 두면 익명)">
+      <span class="count" id="count">0 / 200</span>
+    </div>
+    <div class="row colors" id="colors"></div>
+    <div><button class="btn" type="submit">포스트잇 붙이기</button></div>
+  </form>
+
+  <div class="wall" id="wall"></div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <b>교수 비밀번호</b>
+    <input type="password" id="pw" placeholder="비밀번호 입력">
+    <div class="err" id="pwErr"></div>
+    <button class="btn" id="pwOk">열기</button> <button class="small" id="pwCancel">취소</button>
+  </div>
+</div>
+
+<!-- 파이어베이스 (수정하지 마세요) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== 설정 시작: 여기만 바꾸세요 ===== */
+const firebaseConfig = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
+};
+const PASSWORD = "daejin1234";            // 교수 대시보드 비밀번호
+const BOARD_TITLE = "우리 수업 포스트잇 보드"; // 맨 위 제목
+const BOARD_ID = "class1";                 // 수업(반)마다 다르게 쓰면 보드가 나뉩니다
+/* ===== 설정 끝 ===== */
+
+const COLORS = {
+  yellow:{label:"좋았던 점", bar:"#f2d600"},
+  pink:{label:"궁금한 점", bar:"#ec6f9c"},
+  sky:{label:"제안", bar:"#4fb3e8"},
+  green:{label:"기타", bar:"#8bc34a"}
+};
+const DEFAULT_Q = "오늘 수업에서 가장 기억에 남는 것은?";
+const $ = id => document.getElementById(id);
+const boardId = (new URLSearchParams(location.search).get("board") || BOARD_ID).replace(/[^\w-]/g,"").slice(0,40) || "class1";
+document.title = BOARD_TITLE; $("title").textContent = BOARD_TITLE;
+
+function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k,JSON.stringify(v)); }catch(e){ return null; } }
+
+/* ---------- 데이터 저장소: 파이어베이스 또는 체험 모드 ---------- */
+let api;
+if (firebaseConfig.apiKey && typeof firebase !== "undefined") {
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const boardRef = db.collection("boards").doc(boardId);
+  const notes = boardRef.collection("notes");
+  const FV = firebase.firestore.FieldValue;
+  api = {
+    onNotes: cb => notes.onSnapshot(s => cb(s.docs.map(d => ({id:d.id, ...d.data(), t:(d.data().createdAt ? d.data().createdAt.toMillis() : Date.now())}))), e => alert2("불러오기 실패: " + e.message)),
+    onQuestion: cb => boardRef.onSnapshot(s => cb(s.exists && s.data().question ? s.data().question : DEFAULT_Q)),
+    add: n => notes.add({...n, likes:0, hidden:false, createdAt:FV.serverTimestamp()}),
+    like: (id,d) => notes.doc(id).update({likes:FV.increment(d)}),
+    hide: (id,h) => notes.doc(id).update({hidden:h}),
+    remove: id => notes.doc(id).delete(),
+    setQuestion: q => boardRef.set({question:q},{merge:true})
+  };
+} else {
+  $("demoBar").hidden = false;
+  const key = "postit-demo-" + boardId, subs = [], qsubs = [];
+  const all = () => store(key) || [];
+  const save = a => { store(key,a); subs.forEach(f => f(all())); };
+  api = {
+    onNotes: cb => { subs.push(cb); cb(all()); },
+    onQuestion: cb => { qsubs.push(cb); cb(store(key+"-q") || DEFAULT_Q); },
+    add: async n => save([...all(), {...n, id:String(Date.now()), likes:0, hidden:false, t:Date.now()}]),
+    like: async (id,d) => save(all().map(x => x.id===id ? {...x, likes:x.likes+d} : x)),
+    hide: async (id,h) => save(all().map(x => x.id===id ? {...x, hidden:h} : x)),
+    remove: async id => save(all().filter(x => x.id!==id)),
+    setQuestion: async q => { store(key+"-q",q); qsubs.forEach(f => f(q)); }
+  };
+}
+function alert2(m){ $("wall").innerHTML = '<div class="empty"></div>'; $("wall").firstChild.textContent = m; }
+
+/* ---------- 학생 화면 ---------- */
+let NOTES = [], liked = store("postit-liked-" + boardId) || {};
+$("colors").innerHTML = Object.entries(COLORS).map(([k,c],i) =>
+  `<label class="c-${k}"><input type="radio" name="color" value="${k}" ${i===0?"checked":""}><span>${c.label}</span></label>`).join("");
+$("text").addEventListener("input", () => $("count").textContent = $("text").value.length + " / 200");
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const text = $("text").value.trim(); if (!text) return;
+  const color = document.querySelector("input[name=color]:checked").value;
+  try {
+    await api.add({text, name:$("name").value.trim().slice(0,20), color});
+    $("text").value = ""; $("count").textContent = "0 / 200";
+  } catch(err) { alert2("저장 실패: " + err.message); }
+});
+
+function renderWall(){
+  const wall = $("wall"), list = NOTES.filter(n => !n.hidden).sort((a,b) => b.t - a.t);
+  wall.innerHTML = "";
+  if (!list.length) { wall.innerHTML = '<div class="empty">첫 번째 포스트잇을 붙여 주세요!</div>'; return; }
+  list.forEach(n => {
+    const el = document.createElement("div");
+    el.className = "note c-" + (COLORS[n.color] ? n.color : "yellow");
+    el.style.setProperty("--r", ((n.id.charCodeAt(n.id.length-1) % 5) - 2) + "deg");
+    el.textContent = n.text;
+    const meta = document.createElement("div"); meta.className = "meta";
+    const who = document.createElement("span"); who.textContent = n.name || "익명";
+    const b = document.createElement("button"); b.textContent = "❤️ " + (n.likes||0); if (liked[n.id]) b.classList.add("on");
+    b.onclick = () => { const d = liked[n.id] ? -1 : 1; if (d>0) liked[n.id]=1; else delete liked[n.id]; store("postit-liked-"+boardId, liked); api.like(n.id,d); };
+    meta.append(who,b); el.append(meta); wall.append(el);
+  });
+}
+
+/* ---------- 교수 대시보드 ---------- */
+const isOpen = () => { try { return sessionStorage.getItem("postit-dash")==="1"; } catch(e){ return window._dash; } };
+const setOpen = v => { try { sessionStorage.setItem("postit-dash", v?"1":"0"); } catch(e){ window._dash=v; } $("dash").hidden = !v; if (v) renderDash(); };
+$("lockBtn").onclick = () => { if (isOpen()) return setOpen(false); $("modal").hidden = false; $("pw").value=""; $("pwErr").textContent=""; $("pw").focus(); };
+$("pwCancel").onclick = () => $("modal").hidden = true;
+$("pwOk").onclick = () => { if ($("pw").value === PASSWORD) { $("modal").hidden = true; setOpen(true); } else $("pwErr").textContent = "비밀번호가 맞지 않아요."; };
+$("pw").addEventListener("keydown", e => { if (e.key==="Enter") $("pwOk").click(); });
+$("logout").onclick = () => setOpen(false);
+$("qSave").onclick = () => { const q = $("qInput").value.trim(); if (q) api.setQuestion(q); };
+
+function renderDash(){
+  if ($("dash").hidden) return;
+  const n = NOTES;
+  $("tTotal").textContent = n.length;
+  $("tLikes").textContent = n.reduce((s,x) => s + (x.likes||0), 0);
+  $("tNames").textContent = new Set(n.filter(x => x.name).map(x => x.name)).size;
+  const max = Math.max(1, ...Object.keys(COLORS).map(k => n.filter(x => x.color===k).length));
+  $("bars").innerHTML = Object.entries(COLORS).map(([k,c]) => { const v = n.filter(x => x.color===k).length;
+    return `<div><span>${c.label}</span><i style="width:${v/max*100}%;background:${c.bar}"></i><b>${v}</b></div>`; }).join("");
+  const top = $("top5"); top.innerHTML = "";
+  [...n].sort((a,b) => (b.likes||0)-(a.likes||0)).slice(0,5).forEach(x => { const li = document.createElement("li"); li.textContent = `${x.text} (❤️ ${x.likes||0})`; top.append(li); });
+  const list = $("list"); list.innerHTML = "";
+  [...n].sort((a,b) => b.t-a.t).forEach(x => {
+    const row = document.createElement("div"); if (x.hidden) row.className = "hid";
+    const s = document.createElement("span"); s.textContent = `[${(COLORS[x.color]||COLORS.yellow).label}] ${x.text} — ${x.name||"익명"}`;
+    const h = document.createElement("button"); h.textContent = x.hidden ? "다시 보이기" : "숨기기"; h.onclick = () => api.hide(x.id, !x.hidden);
+    const d = document.createElement("button"); d.textContent = "삭제"; d.onclick = () => { if (d.dataset.sure) api.remove(x.id); else { d.dataset.sure=1; d.textContent="한 번 더 누르면 삭제"; } };
+    row.append(s,h,d); list.append(row);
+  });
+}
+$("csvBtn").onclick = () => {
+  const esc = v => '"' + String(v ?? "").replace(/"/g,'""') + '"';
+  const rows = [["시간","유형","이름","내용","공감","숨김"]].concat(
+    [...NOTES].sort((a,b) => a.t-b.t).map(x => [new Date(x.t).toLocaleString("ko-KR"), (COLORS[x.color]||COLORS.yellow).label, x.name||"익명", x.text, x.likes||0, x.hidden?"예":""]));
+  const blob = new Blob(["﻿" + rows.map(r => r.map(esc).join(",")).join("\r\n")], {type:"text/csv"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = BOARD_TITLE + "_" + boardId + ".csv"; a.click();
+};
+
+api.onNotes(list => { NOTES = list; renderWall(); renderDash(); });
+api.onQuestion(q => { $("question").textContent = q; if (document.activeElement !== $("qInput")) $("qInput").value = q; });
+setOpen(isOpen());
+</script>
+</body>
+</html>
