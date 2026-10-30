@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>커피 주문 & 셔틀 룰렛</title>
+<style>
+:root{--bg:#fff8f0;--ink:#3b2a20;--sub:#8a7465;--line:#efe1d3;--brown:#7a4a2b;--cream:#f6e7d6;--hot:#e0523b;--ice:#3b82c4;--ok:#2f7a5b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 36px}
+.top{text-align:center;margin:4px 0 14px}
+.top .cup{font-size:44px;line-height:1}
+.top h1{margin:4px 0 2px;font-size:1.55rem}
+.top p{margin:0;color:var(--sub)}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tabs button{border:2px solid var(--brown);background:#fff;color:var(--brown);border-radius:14px;padding:12px;font:inherit;font-size:1.05rem;font-weight:800;cursor:pointer}
+.tabs button.on{background:var(--brown);color:#fff}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.card h2{font-size:1.05rem;margin:0 0 10px}
+input{width:100%;font:inherit;font-size:1.05rem;border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.menu button,.temp button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 4px;font:inherit;font-weight:700;cursor:pointer;font-size:.95rem}
+.menu button span{display:block;font-size:28px}
+.menu button.on{border-color:var(--brown);background:var(--cream)}
+.temp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.temp button.on[data-t="HOT"]{border-color:var(--hot);background:#fde8e4;color:var(--hot)}
+.temp button.on[data-t="ICE"]{border-color:var(--ice);background:#e3effa;color:var(--ice)}
+.primary{width:100%;border:0;border-radius:14px;background:var(--brown);color:#fff;font:inherit;font-size:1.15rem;font-weight:800;padding:15px;cursor:pointer}
+.msg{margin-top:10px;text-align:center;font-weight:700;min-height:1.5em}
+.warn{color:var(--hot)}.ok{color:var(--ok)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.6rem;color:var(--brown)}
+.bars div{display:grid;grid-template-columns:96px 1fr 28px;gap:8px;align-items:center;margin:6px 0;font-size:.92rem}
+.bar{height:16px;background:#f3e9de;border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--brown)}
+.list{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--cream);border-radius:999px;padding:5px 10px;font-size:.88rem}
+.chip.h{background:#fde8e4}.chip.i{background:#e3effa}
+.wheelbox{position:relative;width:min(320px,86vw);margin:4px auto 12px}
+.wheelbox canvas{width:100%;height:auto;display:block}
+.pin{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:26px solid var(--hot);filter:drop-shadow(0 2px 2px rgba(0,0,0,.2))}
+.win{text-align:center;font-size:1.25rem;font-weight:800;min-height:2em;margin:6px 0 10px}
+.win em{font-style:normal;color:var(--hot);font-size:1.5rem}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ghost{border:2px solid var(--brown);background:#fff;color:var(--brown);border-radius:14px;font:inherit;font-weight:800;padding:13px;cursor:pointer}
+.note{font-size:.8rem;color:var(--sub);text-align:center;margin-top:16px}
+.conf{position:fixed;top:-10px;font-size:22px;animation:fall 1.8s linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.6}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="cup">☕</div><h1>오늘의 커피 주문 & 셔틀 룰렛</h1><p>주문은 모두 함께 쌓이고, 커피 셔틀은 룰렛이 정해요</p></div>
+  <div class="tabs"><button class="on" data-v="order">① 주문하기</button><button data-v="board">② 주문 현황 · 룰렛</button></div>
+
+  <section id="order">
+    <div class="card"><h2>별명</h2><input id="nick" maxlength="10" placeholder="예) 커피요정, 3층 교수"></div>
+    <div class="card"><h2>메뉴</h2><div class="menu" id="menu"></div></div>
+    <div class="card"><h2>온도</h2><div class="temp"><button data-t="HOT">🔥 HOT</button><button data-t="ICE">🧊 ICE</button></div></div>
+    <div class="card"><h2>요청 사항 <small style="font-weight:400;color:var(--sub)">(선택)</small></h2><input id="req" maxlength="20" placeholder="예) 샷 추가, 연하게"></div>
+    <button class="primary" id="send">주문하기</button>
+    <div class="msg" id="msg"></div>
+  </section>
+
+  <section id="board" hidden>
+    <div class="stats"><div class="stat">주문<b id="n">0</b></div><div class="stat">🔥 HOT<b id="nh">0</b></div><div class="stat">🧊 ICE<b id="ni">0</b></div></div>
+    <div class="card"><h2>메뉴별 잔 수</h2><div class="bars" id="bars"></div></div>
+    <div class="card"><h2>주문한 사람</h2><div class="list" id="list"></div></div>
+    <div class="card"><h2>🎯 오늘의 커피 셔틀 룰렛</h2>
+      <div class="wheelbox"><div class="pin"></div><canvas id="wheel" width="640" height="640"></canvas></div>
+      <div class="win" id="win">주문한 사람 중에서 뽑아요</div>
+      <div class="row2"><button class="primary" id="spin">룰렛 돌리기</button><button class="ghost" id="reset">처음 상태로</button></div>
+    </div>
+  </section>
+  <p class="note">연수 체험용 완성 예시 · 이 미리보기는 이 화면 안에서만 쌓입니다. 실제 앱은 주문이 캔바 시트에 모여 모두의 화면에 보입니다.</p>
+</div>
+<script>
+const MENU=[['☕','아메리카노'],['🥛','카페라떼'],['🍦','바닐라라떼'],['🍵','녹차라떼'],['🍑','아이스티'],['🙅','안 마셔요']];
+const $=id=>document.getElementById(id);
+let menu=null,temp=null,spinning=false,angle=0;
+const SEED=[['커피요정','아메리카노','ICE','샷 추가'],['3층 교수','카페라떼','HOT',''],['통계왕','아메리카노','HOT','연하게'],['라떼파','바닐라라떼','ICE',''],['오후반','녹차라떼','ICE',''],['디자인','아메리카노','ICE','']];
+let D=SEED.map(r=>({nick:r[0],menu:r[1],temp:r[2],req:r[3]}));
+$('menu').innerHTML=MENU.map(m=>`<button data-m="${m[1]}"><span>${m[0]}</span>${m[1]}</button>`).join('');
+document.querySelectorAll('#menu button').forEach(b=>b.onclick=()=>{menu=b.dataset.m;document.querySelectorAll('#menu button').forEach(x=>x.classList.toggle('on',x===b))});
+document.querySelectorAll('.temp button').forEach(b=>b.onclick=()=>{temp=b.dataset.t;document.querySelectorAll('.temp button').forEach(x=>x.classList.toggle('on',x===b))});
+$('send').onclick=()=>{
+  const nick=$('nick').value.trim(),miss=[];
+  if(!nick)miss.push('별명');if(!menu)miss.push('메뉴');if(!temp&&menu!=='안 마셔요')miss.push('온도');
+  if(miss.length){$('msg').innerHTML='<span class="warn">아직 고르지 않았어요: '+miss.join(', ')+'</span>';return}
+  D.push({nick,menu,temp:menu==='안 마셔요'?'-':temp,req:$('req').value.trim()});
+  $('msg').innerHTML='<span class="ok">주문 완료! ☕ ② 주문 현황에서 확인해 보세요</span>';
+  $('req').value='';menu=null;temp=null;document.querySelectorAll('#menu button,.temp button').forEach(x=>x.classList.remove('on'));
+};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function people(){const seen=new Set();return D.map(d=>d.nick).filter(n=>!seen.has(n)&&seen.add(n))}
+const COL=['#7a4a2b','#c98b5a','#e0523b','#3b82c4','#2f7a5b','#d4a017','#8a5cc2','#e07a9b'];
+function draw(){
+  const c=$('wheel'),x=c.getContext('2d'),P=people(),n=Math.max(P.length,1),R=310,cx=320,cy=320;
+  x.clearRect(0,0,640,640);x.save();x.translate(cx,cy);x.rotate(angle);
+  for(let i=0;i<n;i++){const a0=i*2*Math.PI/n,a1=(i+1)*2*Math.PI/n;
+    x.beginPath();x.moveTo(0,0);x.arc(0,0,R,a0,a1);x.closePath();x.fillStyle=P.length?COL[i%COL.length]:'#ddd';x.fill();x.strokeStyle='#fff';x.lineWidth=4;x.stroke();
+    if(P.length){x.save();x.rotate((a0+a1)/2);x.fillStyle='#fff';x.font='bold '+(n>10?24:30)+'px Malgun Gothic, sans-serif';x.textAlign='right';x.textBaseline='middle';x.fillText(P[i].slice(0,7),R-22,0);x.restore();}}
+  x.restore();x.beginPath();x.arc(cx,cy,40,0,2*Math.PI);x.fillStyle='#fff';x.fill();x.font='38px sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('☕',cx,cy+2);
+}
+function board(){
+  $('n').textContent=D.filter(d=>d.menu!=='안 마셔요').length;$('nh').textContent=D.filter(d=>d.temp==='HOT').length;$('ni').textContent=D.filter(d=>d.temp==='ICE').length;
+  const cnt=MENU.map(m=>[m[1],D.filter(d=>d.menu===m[1]).length]),mx=Math.max(1,...cnt.map(c=>c[1]));
+  $('bars').innerHTML=cnt.map(([m,c])=>`<div><span>${m}</span><span class="bar"><i style="width:${c/mx*100}%"></i></span><b>${c}</b></div>`).join('');
+  $('list').innerHTML=D.map(d=>`<span class="chip ${d.temp==='HOT'?'h':d.temp==='ICE'?'i':''}">${esc(d.nick)} · ${esc(d.menu)}${d.temp!=='-'?' '+d.temp:''}${d.req?' ('+esc(d.req)+')':''}</span>`).join('');
+  draw();
+}
+$('spin').onclick=()=>{
+  const P=people();if(spinning||!P.length)return;spinning=true;$('win').textContent='두구두구두구…';
+  const pick=Math.floor(Math.random()*P.length),seg=2*Math.PI/P.length;
+  const target=-Math.PI/2-(pick+0.5)*seg;let end=target+2*Math.PI*6;while(end<angle+2*Math.PI*5)end+=2*Math.PI;
+  const start=angle,t0=performance.now(),dur=3200;
+  (function f(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);angle=start+(end-start)*e;draw();
+    if(k<1)requestAnimationFrame(f);else{spinning=false;angle=end%(2*Math.PI);$('win').innerHTML='오늘의 커피 셔틀은 <em>'+esc(P[pick])+'</em> 님! 🎉';
+      for(let i=0;i<24;i++){const s=document.createElement('div');s.className='conf';s.textContent=['☕','🎉','✨','🥤'][i%4];s.style.left=Math.random()*100+'vw';s.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),2600)}}})(t0);
+};
+$('reset').onclick=()=>{D=SEED.map(r=>({nick:r[0],menu:r[1],temp:r[2],req:r[3]}));$('win').textContent='주문한 사람 중에서 뽑아요';board()};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));$('order').hidden=b.dataset.v!=='order';$('board').hidden=b.dataset.v!=='board';if(b.dataset.v==='board')board()});
+board();
+</script>
+</body>
+</html>
