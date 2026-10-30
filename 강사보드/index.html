@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>중급 중국어 회화 - 7주차 실시간 수업 보드</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    <style>
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            background-color: #070b19;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-modal {
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Ambient Glow Background */
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .glow-circle-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(7, 11, 25, 0) 70%);
+        }
+        .glow-circle-2 {
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(7, 11, 25, 0) 70%);
+        }
+
+        /* Post-it Drop & Sway Animation */
+        @keyframes dropIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-40px) rotate(-5deg) scale(0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(10px) rotate(2deg) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+        }
+
+        .post-it-animate {
+            animation: dropIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Live Indicator Pulse */
+        @keyframes livePulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .live-dot {
+            animation: livePulse 2s infinite;
+        }
+
+        /* Heart Pop Animation */
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); color: #ef4444; }
+            100% { transform: scale(1); }
+        }
+        .heart-pop {
+            animation: heartPop 0.3s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+
+    <!-- Ambient Glow Background Elements -->
+    <div class="glow-bg">
+        <div class="glow-circle-1"></div>
+        <div class="glow-circle-2"></div>
+    </div>
+
+    <!-- Custom Toast / Notification Modal -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div class="glass-modal p-6 rounded-2xl max-w-sm w-full mx-4 text-center shadow-2xl">
+            <div id="modal-icon" class="text-4xl text-amber-400 mb-3"><i class="fa-solid fa-circle-info"></i></div>
+            <h3 id="modal-title" class="text-lg font-bold text-white mb-2">알림</h3>
+            <p id="modal-message" class="text-sm text-slate-300 mb-6">메시지 내용</p>
+            <div id="modal-actions" class="flex justify-center gap-3">
+                <button onclick="closeModal()" class="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 font-semibold hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professor Login Modal -->
+    <div id="prof-login-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div class="glass-modal p-6 rounded-2xl max-w-sm w-full mx-4 shadow-2xl border border-amber-500/30">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-lock"></i> 교수 대시보드 인증
+                </h3>
+                <button onclick="closeProfLogin()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 mb-4">교수자 전용 대시보드에 접근하려면 비밀번호를 입력하세요.</p>
+            <input type="password" id="prof-password-input" placeholder="비밀번호" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 mb-4">
+            <div class="flex justify-end gap-2">
+                <button onclick="closeProfLogin()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-sm hover:bg-slate-700 transition">취소</button>
+                <button onclick="verifyProfPassword()" class="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 text-sm font-semibold hover:bg-amber-400 transition">로그인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="w-full border-b border-white/10 glass-card sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold text-lg shadow-lg shadow-amber-500/20">
+                    中
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-medium text-amber-400 tracking-wider">
+                        <span id="header-subject">중급 중국어 회화</span>
+                        <span>•</span>
+                        <span id="header-week">7주차</span>
+                    </div>
+                    <h1 id="header-title" class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                        식당에서 주문하기
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Live Status & Counter & Professor Toggle -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <div class="flex items-center gap-2 bg-slate-900/60 px-3.5 py-1.5 rounded-full border border-white/5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-500 live-dot"></span>
+                    <span class="text-xs font-bold text-red-400 tracking-wider">LIVE</span>
+                    <div class="h-3 w-[1px] bg-white/20 mx-1"></div>
+                    <i class="fa-solid fa-note-sticky text-xs text-slate-400"></i>
+                    <span id="participant-count" class="text-xs font-semibold text-slate-200">의견 0개</span>
+                </div>
+
+                <button onclick="openProfLogin()" id="prof-mode-btn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-amber-500/20 hover:border-amber-400/50 border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-medium transition shadow-sm">
+                    <i class="fa-solid fa-lock text-xs"></i>
+                    <span class="hidden sm:inline">교수 대시보드</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+
+        <!-- Question Banner Card -->
+        <div class="glass-card rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-xl border-l-4 border-l-amber-400">
+            <div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none text-9xl text-amber-400 font-black">
+                问
+            </div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="inline-block px-2.5 py-1 rounded-lg bg-amber-400/10 text-amber-400 text-xs font-bold mb-2 border border-amber-400/20">
+                        오늘의 질문 (本课提问)
+                    </span>
+                    <h2 id="current-question-text" class="text-lg sm:text-xl font-bold text-white">
+                        오늘 배운 표현 중 실제로 써 보고 싶은 문장은?
+                    </h2>
+                </div>
+                <!-- Presentation Mode Toggle -->
+                <div id="presentation-btn-wrapper" class="hidden">
+                    <button onclick="togglePresentationMode()" id="pres-mode-toggle" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">
+                        <i class="fa-solid fa-expand"></i>
+                        <span>발표 화면 모드</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Color Code Legend -->
+            <div class="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-3 text-xs">
+                <span class="text-slate-400 font-medium mr-1">색상 분류:</span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-yellow-100 text-yellow-900 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-yellow-500"></span>노랑: 써 보고 싶은 표현
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-pink-100 text-pink-900 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-pink-500"></span>분홍: 발음 어려움
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-100 text-sky-900 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-sky-500"></span>하늘: 질문
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>연두: 더 알고 싶음
+                </span>
+            </div>
+        </div>
+
+        <!-- Professor Dashboard Section (Hidden by default) -->
+        <section id="professor-dashboard" class="hidden glass-card rounded-2xl p-6 border border-amber-500/30 shadow-2xl relative">
+            <div class="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+                <span class="px-3 py-1 bg-amber-500 text-slate-950 font-bold text-xs rounded-full shadow-lg">PROFESSOR MODE</span>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-4 border-b border-white/10">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-amber-400"></i> 실시간 수업 리포트 & 관리
+                    </h3>
+                    <p class="text-xs text-slate-400">학생들의 의견 통계 및 데이터 관리 도구입니다.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="openEditQuestionModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-medium border border-amber-500/20 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-pen-to-square"></i> 질문 바꾸기
+                    </button>
+                    <button onclick="exportCSV()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-medium border border-emerald-500/20 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-download"></i> CSV 내려받기
+                    </button>
+                    <button onclick="closeProfDashboard()" class="px-3.5 py-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 text-xs font-medium border border-red-500/30 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i> 대시보드 닫기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Stat Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">전체 의견 수</p>
+                        <h4 id="stat-total-count" class="text-2xl font-black text-white">0건</h4>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-note-sticky"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">공감 합계</p>
+                        <h4 id="stat-total-likes" class="text-2xl font-black text-amber-400">0개</h4>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400 mb-1">분홍(발음 어려움) 비율</p>
+                        <h4 id="stat-pink-ratio" class="text-2xl font-black text-pink-400">0%</h4>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Color Distribution Custom Bar Chart -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-white/5 flex flex-col justify-between">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-amber-400"></i> 색상별 의견 비율
+                    </h4>
+                    <div class="space-y-3 my-auto">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-yellow-300 font-medium">노랑 (써 보고 싶은 표현)</span>
+                                <span id="ratio-yellow-val" class="text-slate-300">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="bar-yellow" class="bg-yellow-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-pink-300 font-medium">분홍 (발음 어려움)</span>
+                                <span id="ratio-pink-val" class="text-slate-300">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="bar-pink" class="bg-pink-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-sky-300 font-medium">하늘 (질문)</span>
+                                <span id="ratio-sky-val" class="text-slate-300">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="bar-sky" class="bg-sky-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span class="text-emerald-300 font-medium">연두 (더 알고 싶음)</span>
+                                <span id="ratio-emerald-val" class="text-slate-300">0%</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                                <div id="bar-emerald" class="bg-emerald-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOP 5 Most Liked Posts -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-white/5 flex flex-col justify-between">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-ranking-star text-amber-400"></i> 공감 많은 순 TOP 5
+                    </h4>
+                    <div id="top-5-list" class="space-y-2.5 overflow-y-auto max-h-48 pr-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Dynamic Custom Word Cloud -->
+                <div class="bg-slate-900/60 p-5 rounded-xl border border-white/5 flex flex-col justify-between">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud text-amber-400"></i> 주요 단어 워드클라우드
+                    </h4>
+                    <div id="word-cloud-container" class="flex flex-wrap items-center justify-center gap-2.5 my-auto p-3 bg-slate-950/60 rounded-xl min-h-[140px] border border-white/5 overflow-hidden">
+                        <!-- Populated dynamically by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Summary Section -->
+            <div class="mt-6 pt-6 border-t border-white/10">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-400 animate-pulse"></i> AI 수업 리포트 & 피드백 분석
+                    </h4>
+                    <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">실시간 자동 분석</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Confusing Concepts Top 3 -->
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-amber-500/20 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xs font-bold text-amber-400 mb-2.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-question"></i> 학생들이 가장 헷갈려하는 개념 TOP 3
+                            </h5>
+                            <ul id="ai-confusing-list" class="space-y-2 text-xs text-slate-300">
+                                <!-- Populated by JS -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Next Lecture Recommendation -->
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-amber-500/20 flex flex-col justify-between">
+                        <div>
+                            <h5 class="text-xs font-bold text-amber-400 mb-2.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-chalkboard-user"></i> 다음 시간에 다시 설명할 포인트
+                            </h5>
+                            <div id="ai-next-class-recommendation" class="text-xs text-slate-300 bg-slate-950/50 p-3 rounded-lg border border-white/5 leading-relaxed">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Layout (Input Form & Post-it Grid) -->
+        <div id="main-content-layout" class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            
+            <!-- Student Input Panel (Left Column on Desktop) -->
+            <div id="input-panel" class="glass-card rounded-2xl p-5 sm:p-6 shadow-xl lg:sticky lg:top-28">
+                <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib text-amber-400"></i> 의견 남기기
+                </h3>
+                <form id="post-form" onsubmit="handlePostSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">이름 (선택, 미기재 시 익명)</label>
+                        <input type="text" id="student-name" placeholder="예: 김대진" maxlength="20" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-medium text-slate-300">의견 작성 <span class="text-amber-400">*</span></label>
+                            <span id="char-count" class="text-xs text-slate-500">0 / 200자</span>
+                        </div>
+                        <textarea id="student-text" rows="4" placeholder="오늘 배운 문장이나 질문을 적어주세요... (예: 麻烦少放点香菜，谢谢！)" maxlength="200" oninput="updateCharCount()" required class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl p-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-2">색상 선택 <span class="text-amber-400">*</span></label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <label class="cursor-pointer relative flex flex-col items-center">
+                                <input type="radio" name="post-color" value="yellow" checked class="peer sr-only">
+                                <div class="w-full py-2.5 rounded-xl bg-yellow-400 text-yellow-950 font-bold text-xs text-center peer-ring-2 peer-checked:ring-4 peer-checked:ring-amber-400 shadow-md transition flex flex-col items-center justify-center gap-1">
+                                    <span class="w-3 h-3 rounded-full bg-yellow-600"></span>노랑
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative flex flex-col items-center">
+                                <input type="radio" name="post-color" value="pink" class="peer sr-only">
+                                <div class="w-full py-2.5 rounded-xl bg-pink-400 text-pink-950 font-bold text-xs text-center peer-ring-2 peer-checked:ring-4 peer-checked:ring-amber-400 shadow-md transition flex flex-col items-center justify-center gap-1">
+                                    <span class="w-3 h-3 rounded-full bg-pink-600"></span>분홍
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative flex flex-col items-center">
+                                <input type="radio" name="post-color" value="sky" class="peer sr-only">
+                                <div class="w-full py-2.5 rounded-xl bg-sky-400 text-sky-950 font-bold text-xs text-center peer-ring-2 peer-checked:ring-4 peer-checked:ring-amber-400 shadow-md transition flex flex-col items-center justify-center gap-1">
+                                    <span class="w-3 h-3 rounded-full bg-sky-600"></span>하늘
+                                </div>
+                            </label>
+                            <label class="cursor-pointer relative flex flex-col items-center">
+                                <input type="radio" name="post-color" value="emerald" class="peer sr-only">
+                                <div class="w-full py-2.5 rounded-xl bg-emerald-400 text-emerald-950 font-bold text-xs text-center peer-ring-2 peer-checked:ring-4 peer-checked:ring-amber-400 shadow-md transition flex flex-col items-center justify-center gap-1">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-600"></span>연두
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-sm hover:from-amber-400 hover:to-amber-500 transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>포스트잇 붙이기</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Post-it Grid Area (Right 3 Columns on Desktop) -->
+            <div class="lg:col-span-3 flex flex-col gap-4">
+                <!-- Presentation View Controls (Only visible in Presentation Mode) -->
+                <div id="presentation-controls" class="hidden flex items-center justify-between bg-slate-900/80 p-3.5 rounded-xl border border-amber-500/30 shadow-lg">
+                    <div class="flex items-center gap-2 text-xs font-bold text-amber-400">
+                        <i class="fa-solid fa-display"></i> 발표 화면 보기 모드 설정
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="setPresentationLayout('categorized')" id="layout-cat-btn" class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-table-cells-large"></i> 분류 보기 (4열 정렬)
+                        </button>
+                        <button onclick="setPresentationLayout('freeform')" id="layout-free-btn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-xs transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-shapes"></i> 자유 보기 (무작위 흩뿌리기)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900/40 p-3.5 rounded-xl border border-white/5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-bold text-white">전체 포스트잇</span>
+                        <span id="total-badge" class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">0개</span>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap items-center gap-1.5 text-xs">
+                        <button onclick="filterPosts('all')" id="filter-all" class="px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition">전체보기</button>
+                        <button onclick="filterPosts('yellow')" id="filter-yellow" class="px-3 py-1.5 rounded-lg bg-slate-800 text-yellow-300 hover:bg-slate-700 transition">노랑</button>
+                        <button onclick="filterPosts('pink')" id="filter-pink" class="px-3 py-1.5 rounded-lg bg-slate-800 text-pink-300 hover:bg-slate-700 transition">분홍</button>
+                        <button onclick="filterPosts('sky')" id="filter-sky" class="px-3 py-1.5 rounded-lg bg-slate-800 text-sky-300 hover:bg-slate-700 transition">하늘</button>
+                        <button onclick="filterPosts('emerald')" id="filter-emerald" class="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-300 hover:bg-slate-700 transition">연두</button>
+                    </div>
+                </div>
+
+                <!-- Post-its Container Grid -->
+                <div id="post-its-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 transition-all duration-500">
+                    <!-- Populated dynamically by JS from Firestore -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Question Modal -->
+    <div id="edit-question-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+        <div class="glass-modal p-6 rounded-2xl max-w-md w-full mx-4 shadow-2xl border border-amber-500/30">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square"></i> 오늘의 질문 수정
+                </h3>
+                <button onclick="closeEditQuestionModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">과목명</label>
+                    <input type="text" id="edit-subject-input" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400" value="중급 중국어 회화">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">주차 및 주제</label>
+                    <input type="text" id="edit-week-input" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400 mb-2" value="7주차">
+                    <input type="text" id="edit-title-input" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400" value="식당에서 주문하기">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">오늘의 질문</label>
+                    <textarea id="edit-question-input" rows="3" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-amber-400">오늘 배운 표현 중 실제로 써 보고 싶은 문장은?</textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeEditQuestionModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-sm hover:bg-slate-700 transition">취소</button>
+                <button onclick="saveNewQuestion()" class="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 text-sm font-semibold hover:bg-amber-400 transition">저장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-white/10 glass-card mt-12 py-6 text-center text-xs text-slate-400">
+        <p>중급 중국어 회화 실시간 수업 보드 &copy; 2026 Daejin University. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase & Application Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, addDoc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDM6GpTdFaLwRmtIDv7T0mAhTVtm08SrcE",
+            authDomain: "postit-demo-215f5.firebaseapp.com",
+            projectId: "postit-demo-215f5",
+            storageBucket: "postit-demo-215f5.firebasestorage.app",
+            messagingSenderId: "547065029518",
+            appId: "1:547065029518:web:a46d272b5572501b43fadf"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let posts = [];
+        let currentFilter = 'all';
+        let isProfessorMode = false;
+        let isPresentationMode = false;
+        let presentationLayout = 'categorized';
+
+        const colorStyles = {
+            yellow: {
+                bg: 'bg-yellow-100 text-yellow-950 border-yellow-300',
+                badgeBg: 'bg-yellow-200 text-yellow-900',
+                tagText: '노랑 · 써 보고 싶은 표현',
+                dot: 'bg-yellow-500'
+            },
+            pink: {
+                bg: 'bg-pink-100 text-pink-950 border-pink-300',
+                badgeBg: 'bg-pink-200 text-pink-900',
+                tagText: '분홍 · 발음 어려움',
+                dot: 'bg-pink-500'
+            },
+            sky: {
+                bg: 'bg-sky-100 text-sky-950 border-sky-300',
+                badgeBg: 'bg-sky-200 text-sky-900',
+                tagText: '하늘 · 질문',
+                dot: 'bg-sky-500'
+            },
+            emerald: {
+                bg: 'bg-emerald-100 text-emerald-950 border-emerald-300',
+                badgeBg: 'bg-emerald-200 text-emerald-900',
+                tagText: '연두 · 더 알고 싶음',
+                dot: 'bg-emerald-500'
+            }
+        };
+
+        // Initialize Firebase Auth and Listeners
+        async function initFirebase() {
+            try {
+                await signInAnonymously(auth);
+                console.log("Firebase Anonymous Auth successful");
+
+                // Listen to Question Document
+                const questionDocRef = doc(db, 'boards', 'aejin-demo');
+                onSnapshot(questionDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        if (data.question) {
+                            document.getElementById('current-question-text').innerText = data.question;
+                        }
+                    } else {
+                        // Set initial document if not exists
+                        setDoc(questionDocRef, { question: "오늘 배운 표현 중 실제로 써 보고 싶은 문장은?" }, { merge: true });
+                    }
+                }, (error) => {
+                    console.error("Error listening to question:", error);
+                });
+
+                // Listen to Notes Collection
+                const notesCollectionRef = collection(db, 'boards', 'aejin-demo', 'notes');
+                onSnapshot(notesCollectionRef, (snapshot) => {
+                    posts = [];
+                    snapshot.forEach((docSnap) => {
+                        posts.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    
+                    // Sort by createdAt descending (newest first)
+                    posts.sort((a, b) => {
+                        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+                        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+                        return timeB - timeA;
+                    });
+
+                    renderPosts();
+                    updateParticipantCounter();
+                    if (isProfessorMode) {
+                        updateDashboardStats();
+                    }
+                }, (error) => {
+                    console.error("Error listening to notes:", error);
+                });
+
+            } catch (err) {
+                console.error("Firebase auth/init error:", err);
+            }
+        }
+
+        window.onload = function() {
+            initFirebase();
+        };
+
+        window.updateCharCount = function() {
+            const text = document.getElementById('student-text').value;
+            document.getElementById('char-count').innerText = text.length + ' / 200자';
+        }
+
+        window.showModal = function(title, message, iconClass = 'fa-solid fa-circle-info') {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal-icon').innerHTML = `<i class="${iconClass}"></i>`;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        window.closeModal = function() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // Handle Post-it Submission to Firestore
+        window.handlePostSubmit = async function(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('student-name').value.trim();
+            const textInput = document.getElementById('student-text').value.trim();
+            const colorInput = document.querySelector('input[name="post-color"]:checked').value;
+
+            if (!textInput) {
+                showModal('입력 오류', '의견 내용을 입력해주세요.');
+                return;
+            }
+
+            try {
+                const notesCollectionRef = collection(db, 'boards', 'aejin-demo', 'notes');
+                await addDoc(notesCollectionRef, {
+                    text: textInput,
+                    name: nameInput || '익명 학생',
+                    color: colorInput,
+                    likes: 0,
+                    hidden: false,
+                    createdAt: serverTimestamp()
+                });
+
+                document.getElementById('student-text').value = '';
+                document.getElementById('student-name').value = '';
+                updateCharCount();
+                showModal('등록 완료', '포스트잇이 성공적으로 게시되었습니다!', 'fa-solid fa-circle-check');
+            } catch (error) {
+                console.error("Error adding post:", error);
+                showModal('오류', '포스트잇 등록 중 문제가 발생했습니다.', 'fa-solid fa-triangle-exclamation');
+            }
+        }
+
+        // Like Post using Firestore increment
+        window.likePost = async function(id, event) {
+            try {
+                const noteDocRef = doc(db, 'boards', 'aejin-demo', 'notes', id);
+                await updateDoc(noteDocRef, {
+                    likes: increment(1)
+                });
+
+                if (event && event.currentTarget) {
+                    const btn = event.currentTarget;
+                    btn.classList.add('heart-pop');
+                    setTimeout(() => btn.classList.remove('heart-pop'), 300);
+                }
+            } catch (error) {
+                console.error("Error liking post:", error);
+            }
+        }
+
+        window.filterPosts = function(color) {
+            currentFilter = color;
+            ['all', 'yellow', 'pink', 'sky', 'emerald'].forEach(c => {
+                const btn = document.getElementById(`filter-${c}`);
+                if (c === color) {
+                    btn.className = 'px-3 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition';
+                } else {
+                    btn.className = 'px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition';
+                }
+            });
+            renderPosts();
+        }
+
+        window.renderPosts = function() {
+            const grid = document.getElementById('post-its-grid');
+            grid.innerHTML = '';
+
+            let filtered = posts.filter(p => !p.hidden);
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(p => p.color === currentFilter);
+            }
+
+            document.getElementById('total-badge').innerText = filtered.length + '개';
+            
+            // Update live counter badge to show total non-hidden posts count
+            const activeCount = posts.filter(p => !p.hidden).length;
+            document.getElementById('participant-count').innerText = `의견 ${activeCount}개`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-500 glass-card rounded-2xl">
+                        <i class="fa-solid fa-note-sticky text-4xl mb-2 opacity-30"></i>
+                        <p class="text-sm">등록된 포스트잇이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (isPresentationMode && presentationLayout === 'categorized') {
+                grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 transition-all duration-500';
+                const colorOrder = { yellow: 1, pink: 2, sky: 3, emerald: 4 };
+                filtered.sort((a, b) => colorOrder[a.color] - colorOrder[b.color]);
+            } else if (isPresentationMode && presentationLayout === 'freeform') {
+                grid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 transition-all duration-500';
+            } else {
+                grid.className = 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 transition-all duration-500';
+            }
+
+            filtered.forEach((post, index) => {
+                const style = colorStyles[post.color] || colorStyles.yellow;
+                const card = document.createElement('div');
+                const animateClass = index < 3 ? 'post-it-animate' : '';
+                
+                let freeformStyle = '';
+                if (isPresentationMode && presentationLayout === 'freeform') {
+                    freeformStyle = `transform: translateY(${ (index % 3) * 6 }px);`;
+                }
+
+                card.className = `${style.bg} p-5 rounded-2xl border shadow-lg flex flex-col justify-between relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${animateClass}`;
+                if (freeformStyle) card.style.cssText = freeformStyle;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full ${style.badgeBg} text-[11px] font-bold flex items-center gap-1.5 shadow-sm">
+                                <span class="w-2 h-2 rounded-full ${style.dot}"></span>
+                                ${style.tagText.split('·')[1].trim()}
+                            </span>
+                            <span class="text-xs font-semibold opacity-70">${escapeHtml(post.name)}</span>
+                        </div>
+                        <p class="text-sm font-medium leading-relaxed mb-4 whitespace-pre-wrap break-words">${escapeHtml(post.text)}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-black/10 text-xs">
+                        <button onclick="likePost('${post.id}', event)" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 hover:bg-black/10 transition font-bold">
+                            <i class="fa-solid fa-heart text-red-500"></i>
+                            <span>${post.likes || 0}</span>
+                        </button>
+                        ${isProfessorMode ? `
+                            <div class="flex items-center gap-1">
+                                <button onclick="toggleHidePost('${post.id}')" title="숨기기" class="p-1.5 rounded-lg hover:bg-black/10 text-slate-700 transition"><i class="fa-solid fa-eye-slash"></i></button>
+                                <button onclick="deletePost('${post.id}')" title="삭제" class="p-1.5 rounded-lg hover:bg-red-500/20 text-red-700 transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        window.updateParticipantCounter = function() {
+            const activeCount = posts.filter(p => !p.hidden).length;
+            document.getElementById('participant-count').innerText = `의견 ${activeCount}개`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        window.openProfLogin = function() {
+            if (isProfessorMode) {
+                const dash = document.getElementById('professor-dashboard');
+                dash.classList.toggle('hidden');
+                if (!dash.classList.contains('hidden')) {
+                    updateDashboardStats();
+                }
+                return;
+            }
+            document.getElementById('prof-password-input').value = '';
+            document.getElementById('prof-login-modal').classList.remove('hidden');
+        }
+
+        window.closeProfLogin = function() {
+            document.getElementById('prof-login-modal').classList.add('hidden');
+        }
+
+        window.verifyProfPassword = function() {
+            const pwd = document.getElementById('prof-password-input').value;
+            if (pwd === 'daejin1234') {
+                closeProfLogin();
+                isProfessorMode = true;
+                
+                const btn = document.getElementById('prof-mode-btn');
+                btn.innerHTML = `<i class="fa-solid fa-shield-halved text-amber-400"></i><span class="hidden sm:inline">교수 대시보드 (ON)</span>`;
+                btn.classList.add('border-amber-400', 'bg-amber-500/10');
+
+                document.getElementById('presentation-btn-wrapper').classList.remove('hidden');
+                const dash = document.getElementById('professor-dashboard');
+                dash.classList.remove('hidden');
+                updateDashboardStats();
+                renderPosts();
+                showModal('인증 성공', '교수 대시보드 권한이 활성화되었습니다.', 'fa-solid fa-circle-check');
+            } else {
+                showModal('인증 실패', '비밀번호가 맞지 않아요.', 'fa-solid fa-triangle-exclamation');
+            }
+        }
+
+        window.closeProfDashboard = function() {
+            document.getElementById('professor-dashboard').classList.add('hidden');
+        }
+
+        window.updateDashboardStats = function() {
+            const total = posts.length;
+            const totalLikes = posts.reduce((acc, p) => acc + (p.likes || 0), 0);
+            const pinkCount = posts.filter(p => p.color === 'pink').length;
+            const pinkRatio = total > 0 ? Math.round((pinkCount / total) * 100) : 0;
+
+            document.getElementById('stat-total-count').innerText = total + '건';
+            document.getElementById('stat-total-likes').innerText = totalLikes + '개';
+            document.getElementById('stat-pink-ratio').innerText = pinkRatio + '%';
+
+            const yCount = posts.filter(p => p.color === 'yellow').length;
+            const sCount = posts.filter(p => p.color === 'sky').length;
+            const eCount = posts.filter(p => p.color === 'emerald').length;
+
+            const yRatio = total > 0 ? Math.round((yCount / total) * 100) : 0;
+            const pRatio = pinkRatio;
+            const sRatio = total > 0 ? Math.round((sCount / total) * 100) : 0;
+            const eRatio = total > 0 ? Math.round((eCount / total) * 100) : 0;
+
+            document.getElementById('ratio-yellow-val').innerText = yRatio + '%';
+            document.getElementById('bar-yellow').style.width = yRatio + '%';
+
+            document.getElementById('ratio-pink-val').innerText = pRatio + '%';
+            document.getElementById('bar-pink').style.width = pRatio + '%';
+
+            document.getElementById('ratio-sky-val').innerText = sRatio + '%';
+            document.getElementById('bar-sky').style.width = sRatio + '%';
+
+            document.getElementById('ratio-emerald-val').innerText = eRatio + '%';
+            document.getElementById('bar-emerald').style.width = eRatio + '%';
+
+            // TOP 5 List
+            const top5List = document.getElementById('top-5-list');
+            top5List.innerHTML = '';
+            const sortedByLikes = [...posts].sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 5);
+            
+            if (sortedByLikes.length === 0) {
+                top5List.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">데이터가 없습니다.</p>';
+            } else {
+                sortedByLikes.forEach((p, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'flex items-center justify-between p-2.5 rounded-lg bg-slate-950/40 text-xs';
+                    item.innerHTML = `
+                        <div class="flex items-center gap-2 truncate mr-2">
+                            <span class="font-bold text-amber-400">#${idx + 1}</span>
+                            <span class="truncate text-slate-300">${escapeHtml(p.text)}</span>
+                        </div>
+                        <span class="flex items-center gap-1 text-red-400 font-bold shrink-0">
+                            <i class="fa-solid fa-heart"></i> ${p.likes || 0}
+                        </span>
+                    `;
+                    top5List.appendChild(item);
+                });
+            }
+
+            generateWordCloud();
+            generateAISummary();
+        }
+
+        window.generateWordCloud = function() {
+            const container = document.getElementById('word-cloud-container');
+            container.innerHTML = '';
+            const stop = new Set(['그리고','하지만','너무','정말','진짜','어떤','어떻게','있나요','있어요','싶어요','싶은','해요','하면','할때','때','쓰고','써','보고','같아요','어려워요','어려웠어요','궁금해요','합니다','입니다','이거','저거','그냥','많이','조금','다시','오늘','배운','표현','문장','알고','어려워','싶어','있어','해서','되나','쓰나','하나','같은','이런','저런','할때','때문에']);
+            const counts = {};
+            posts.filter(p => !p.hidden).forEach(p => {
+                const w = (p.likes || 0) + 1;
+                const t = p.text || '';
+                (t.match(/[一-鿿]{2,}/g) || []).forEach(h => { counts[h] = (counts[h] || 0) + w; });
+                (t.replace(/[一-鿿]/g, ' ').match(/[가-힣A-Za-z0-9]{2,}/g) || []).forEach(k => {
+                    k = k.replace(/(은|는|이|가|을|를|에|의|도|로|으로|과|와|에서|이랑|랑|까지|부터|처럼|만|요)$/,'');
+                    if (k.length < 2 || stop.has(k)) return;
+                    counts[k] = (counts[k] || 0) + w;
+                });
+            });
+            const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 12);
+            if (!top.length) { container.innerHTML = '<p class="text-xs text-slate-500">의견이 모이면 자주 나온 단어가 여기에 나타나요.</p>'; return; }
+            window._topWords = top.slice(0, 3).map(t => t[0]);
+            const max = top[0][1], tones = ['text-amber-400','text-yellow-300','text-pink-400','text-sky-400','text-emerald-400'];
+            top.sort(() => Math.random() - 0.5).forEach(([word, n], k) => {
+                const r = n / max;
+                const size = r > 0.75 ? 'text-xl font-black' : r > 0.5 ? 'text-lg font-bold' : r > 0.3 ? 'text-base font-bold' : 'text-sm font-semibold';
+                const span = document.createElement('span');
+                span.className = `${size} ${tones[k % tones.length]} transition-all duration-300 hover:scale-110 cursor-default inline-block px-1`;
+                span.title = `가중치 ${n} (의견 수 + 공감 수)`;
+                span.innerText = word;
+                container.appendChild(span);
+            });
+        }
+
+        window.generateAISummary = function() {
+            const confusingListEl = document.getElementById('ai-confusing-list');
+            const recommendationEl = document.getElementById('ai-next-class-recommendation');
+            const live = posts.filter(p => !p.hidden);
+            const label = { pink: '발음 어려움', sky: '질문', yellow: '써 보고 싶은 표현', emerald: '더 알고 싶음' };
+            const hard = live.filter(p => p.color === 'pink' || p.color === 'sky').sort((a, b) => (b.likes || 0) - (a.likes || 0)).slice(0, 3);
+            confusingListEl.innerHTML = '';
+            if (!hard.length) {
+                confusingListEl.innerHTML = '<li class="text-[11px] text-slate-400 p-2.5">분홍(발음 어려움)·하늘(질문) 의견이 모이면 공감이 많은 순으로 보여 드려요.</li>';
+            }
+            hard.forEach((p, k) => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2 bg-slate-950/40 p-2.5 rounded-lg border border-white/5';
+                li.innerHTML = `
+                    <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center shrink-0 text-[11px]">${k + 1}</span>
+                    <div>
+                        <span class="font-bold text-white">${escapeHtml(p.text)}</span>
+                        <p class="text-[11px] text-slate-400 mt-0.5">${label[p.color] || ''} · 공감 ${p.likes || 0}</p>
+                    </div>`;
+                confusingListEl.appendChild(li);
+            });
+            const total = live.length;
+            if (!total) { recommendationEl.innerHTML = '<p class="text-slate-400">의견이 모이면 다음 시간에 다시 설명할 포인트를 정리해 드려요.</p>'; return; }
+            const cnt = c => live.filter(p => p.color === c).length;
+            const pct = c => Math.round(cnt(c) / total * 100);
+            const words = window._topWords || [];
+            const best = hard[0];
+            recommendationEl.innerHTML = `
+                <p class="font-semibold text-white mb-1">💡 총평 및 맞춤형 피드백</p>
+                의견 <strong>${total}개</strong> 중 발음 어려움 <strong>${pct('pink')}%</strong>, 질문 <strong>${pct('sky')}%</strong>, 써 보고 싶은 표현 <strong>${pct('yellow')}%</strong>, 더 알고 싶음 <strong>${pct('emerald')}%</strong>입니다.
+                ${words.length ? `자주 나온 말은 <strong>${words.map(escapeHtml).join(', ')}</strong>입니다. ` : ''}
+                ${best ? `가장 공감이 많은 어려움은 “<strong>${escapeHtml(best.text)}</strong>”이므로, 다음 시간 도입부에서 이 부분을 먼저 다시 짚어 보세요.` : ''}
+                <p class="text-[11px] text-slate-500 mt-2">※ 의견의 색깔·공감 수·단어 빈도로 자동 계산한 요약입니다.</p>`;
+        }
+
+        window.toggleHidePost = async function(id) {
+            try {
+                const noteDocRef = doc(db, 'boards', 'aejin-demo', 'notes', id);
+                const post = posts.find(item => item.id === id);
+                if (post) {
+                    await updateDoc(noteDocRef, {
+                        hidden: !post.hidden
+                    });
+                }
+            } catch (error) {
+                console.error("Error toggling hide:", error);
+            }
+        }
+
+        window.deletePost = async function(id) {
+            try {
+                const noteDocRef = doc(db, 'boards', 'aejin-demo', 'notes', id);
+                await deleteDoc(noteDocRef);
+                showModal('삭제 완료', '포스트잇이 삭제되었습니다.', 'fa-solid fa-circle-check');
+            } catch (error) {
+                console.error("Error deleting post:", error);
+            }
+        }
+
+        window.togglePresentationMode = function() {
+            isPresentationMode = !isPresentationMode;
+            const inputPanel = document.getElementById('input-panel');
+            const mainLayout = document.getElementById('main-content-layout');
+            const toggleBtn = document.getElementById('pres-mode-toggle');
+            const presControls = document.getElementById('presentation-controls');
+
+            if (isPresentationMode) {
+                inputPanel.classList.add('hidden');
+                mainLayout.classList.remove('lg:grid-cols-4');
+                mainLayout.classList.add('grid-cols-1');
+                toggleBtn.innerHTML = `<i class="fa-solid fa-compress"></i><span>일반 화면 모드</span>`;
+                toggleBtn.classList.add('bg-red-500', 'text-white');
+                toggleBtn.classList.remove('bg-amber-500', 'text-slate-950');
+                presControls.classList.remove('hidden');
+            } else {
+                inputPanel.classList.remove('hidden');
+                mainLayout.classList.add('lg:grid-cols-4');
+                mainLayout.classList.remove('grid-cols-1');
+                toggleBtn.innerHTML = `<i class="fa-solid fa-expand"></i><span>발표 화면 모드</span>`;
+                toggleBtn.classList.remove('bg-red-500', 'text-white');
+                toggleBtn.classList.add('bg-amber-500', 'text-slate-950');
+                presControls.classList.add('hidden');
+            }
+            renderPosts();
+        }
+
+        window.setPresentationLayout = function(layout) {
+            presentationLayout = layout;
+            const catBtn = document.getElementById('layout-cat-btn');
+            const freeBtn = document.getElementById('layout-free-btn');
+
+            if (layout === 'categorized') {
+                catBtn.className = 'px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs transition flex items-center gap-1.5';
+                freeBtn.className = 'px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-xs transition flex items-center gap-1.5';
+            } else {
+                freeBtn.className = 'px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs transition flex items-center gap-1.5';
+                catBtn.className = 'px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-bold text-xs transition flex items-center gap-1.5';
+            }
+            renderPosts();
+        }
+
+        window.openEditQuestionModal = function() {
+            document.getElementById('edit-subject-input').value = document.getElementById('header-subject').innerText;
+            document.getElementById('edit-week-input').value = document.getElementById('header-week').innerText;
+            document.getElementById('edit-title-input').value = document.getElementById('header-title').innerText;
+            document.getElementById('edit-question-input').value = document.getElementById('current-question-text').innerText;
+            document.getElementById('edit-question-modal').classList.remove('hidden');
+        }
+
+        window.closeEditQuestionModal = function() {
+            document.getElementById('edit-question-modal').classList.add('hidden');
+        }
+
+        window.saveNewQuestion = async function() {
+            const subj = document.getElementById('edit-subject-input').value.trim();
+            const week = document.getElementById('edit-week-input').value.trim();
+            const title = document.getElementById('edit-title-input').value.trim();
+            const qText = document.getElementById('edit-question-input').value.trim();
+
+            if (subj) document.getElementById('header-subject').innerText = subj;
+            if (week) document.getElementById('header-week').innerText = week;
+            if (title) document.getElementById('header-title').innerText = title;
+
+            if (qText) {
+                try {
+                    const questionDocRef = doc(db, 'boards', 'aejin-demo');
+                    await setDoc(questionDocRef, { question: qText }, { merge: true });
+                } catch (error) {
+                    console.error("Error updating question:", error);
+                }
+            }
+
+            closeEditQuestionModal();
+            showModal('수정 완료', '오늘의 질문과 주제 정보가 업데이트되었습니다.', 'fa-solid fa-circle-check');
+        }
+
+        window.exportCSV = function() {
+            let csvContent = "\uFEFFID,Name,Color,Likes,Text,CreatedAt\r\n";
+            posts.forEach(p => {
+                const timeStr = p.createdAt?.toDate ? p.createdAt.toDate().toISOString() : '';
+                const row = [
+                    p.id,
+                    `"${(p.name || '').replace(/"/g, '""')}"`,
+                    p.color,
+                    p.likes || 0,
+                    `"${(p.text || '').replace(/"/g, '""')}"`,
+                    timeStr
+                ];
+                csvContent += row.join(",") + "\r\n";
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `중급중국어회화_7주차_식당에서주문하기_의견목록.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
